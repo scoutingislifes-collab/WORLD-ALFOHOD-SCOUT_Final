@@ -1,9 +1,10 @@
-import { createContext, useContext, useReducer, useEffect, ReactNode } from "react";
+import { createContext, useContext, useEffect, useState, ReactNode } from "react";
+import { apiRequest } from "@/lib/queryClient";
 
-export type UserRole = "يافع" | "قائد" | "متطوع" | "شريك" | string;
+export type UserRole = "يافع" | "قائد" | "متطوع" | "شريك" | "student" | "instructor" | string;
 
 export type User = {
-  id: string;
+  id: number;
   name: string;
   email: string;
   avatarColor: string;
@@ -18,90 +19,105 @@ type AuthState = {
   isLoading: boolean;
 };
 
-type AuthAction =
-  | { type: "SIGN_IN"; payload: User }
-  | { type: "SIGN_OUT" }
-  | { type: "UPDATE_PROFILE"; payload: Partial<User> }
-  | { type: "SET_LOADING"; payload: boolean };
-
-const initialState: AuthState = {
-  user: null,
-  isLoading: true,
+type ApiUser = {
+  id: number;
+  email: string;
+  fullName: string;
+  role: string;
+  age: number | null;
+  city: string | null;
+  emailVerified: number;
+  createdAt: string;
 };
 
-const AuthContext = createContext<{
-  state: AuthState;
-  dispatch: React.Dispatch<AuthAction>;
-} | null>(null);
-
-function authReducer(state: AuthState, action: AuthAction): AuthState {
-  switch (action.type) {
-    case "SIGN_IN":
-      return { ...state, user: action.payload, isLoading: false };
-    case "SIGN_OUT":
-      return { ...state, user: null, isLoading: false };
-    case "UPDATE_PROFILE":
-      return {
-        ...state,
-        user: state.user ? { ...state.user, ...action.payload } : null,
-      };
-    case "SET_LOADING":
-      return { ...state, isLoading: action.payload };
-    default:
-      return state;
-  }
+function generateColor(seed: string) {
+  const colors = ["#1f8a5b", "#d4a017", "#0d6e88", "#8a4f00", "#5b3aa6", "#a83a3a"];
+  let h = 0;
+  for (let i = 0; i < seed.length; i++) h = (h * 31 + seed.charCodeAt(i)) | 0;
+  return colors[Math.abs(h) % colors.length];
 }
 
+function mapApiUser(u: ApiUser): User {
+  return {
+    id: u.id,
+    name: u.fullName,
+    email: u.email,
+    avatarColor: generateColor(u.email),
+    role: u.role,
+    joinedAt: u.createdAt,
+    country: u.city || undefined,
+  };
+}
+
+type AuthContextValue = {
+  state: AuthState;
+  signIn: (email: string, password: string) => Promise<void>;
+  register: (input: { name: string; email: string; password: string; role: string; country?: string }) => Promise<void>;
+  signOut: () => Promise<void>;
+  updateProfile: (patch: Partial<User>) => void;
+  // Backward-compat shim for any legacy code still using dispatch
+  dispatch: (action: { type: string; payload?: any }) => void;
+};
+
+const AuthContext = createContext<AuthContextValue | null>(null);
+
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [state, dispatch] = useReducer(authReducer, initialState);
+  const [state, setState] = useState<AuthState>({ user: null, isLoading: true });
 
   useEffect(() => {
-    // Load session on mount
-    try {
-      const storedSession = localStorage.getItem("cheetahs_session");
-      if (storedSession) {
-        const user = JSON.parse(storedSession);
-        dispatch({ type: "SIGN_IN", payload: user });
-      } else {
-        dispatch({ type: "SET_LOADING", payload: false });
-      }
-    } catch (error) {
-      dispatch({ type: "SET_LOADING", payload: false });
-    }
+    apiRequest("GET", "/api/auth/me")
+      .then((data: any) => {
+        if (data?.user) {
+          setState({ user: mapApiUser(data.user), isLoading: false });
+        } else {
+          setState({ user: null, isLoading: false });
+        }
+      })
+      .catch(() => setState({ user: null, isLoading: false }));
   }, []);
 
-  useEffect(() => {
-    // Sync session to localStorage
-    if (state.user) {
-      localStorage.setItem("cheetahs_session", JSON.stringify(state.user));
-      
-      // Update the user in the "users" db as well if updating profile
-      try {
-        const storedUsers = localStorage.getItem("cheetahs_users");
-        if (storedUsers) {
-          const users = JSON.parse(storedUsers);
-          const updatedUsers = users.map((u: User) => 
-            u.id === state.user?.id ? state.user : u
-          );
-          localStorage.setItem("cheetahs_users", JSON.stringify(updatedUsers));
-        }
-      } catch (e) {}
-    } else if (!state.isLoading) {
-      localStorage.removeItem("cheetahs_session");
+  async function signIn(email: string, password: string) {
+    const data = await apiRequest("POST", "/api/auth/login", { email, password });
+    setState({ user: mapApiUser(data.user), isLoading: false });
+  }
+
+  async function register(input: { name: string; email: string; password: string; role: string; country?: string }) {
+    const data = await apiRequest("POST", "/api/auth/register", {
+      email: input.email,
+      password: input.password,
+      fullName: input.name,
+      role: input.role,
+      city: input.country,
+    });
+    setState({ user: mapApiUser(data.user), isLoading: false });
+  }
+
+  async function signOut() {
+    try { await apiRequest("POST", "/api/auth/logout"); } catch {}
+    setState({ user: null, isLoading: false });
+  }
+
+  function updateProfile(patch: Partial<User>) {
+    setState(s => s.user ? { ...s, user: { ...s.user, ...patch } } : s);
+  }
+
+  function dispatch(action: { type: string; payload?: any }) {
+    if (action.type === "SIGN_OUT") {
+      void signOut();
+    } else if (action.type === "UPDATE_PROFILE" && action.payload) {
+      updateProfile(action.payload);
     }
-  }, [state.user, state.isLoading]);
+  }
 
   return (
-    <AuthContext.Provider value={{ state, dispatch }}>
+    <AuthContext.Provider value={{ state, signIn, register, signOut, updateProfile, dispatch }}>
       {children}
     </AuthContext.Provider>
   );
 }
 
 export function useAuth() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
-  return context;
+  const ctx = useContext(AuthContext);
+  if (!ctx) throw new Error("useAuth must be used within an AuthProvider");
+  return ctx;
 }

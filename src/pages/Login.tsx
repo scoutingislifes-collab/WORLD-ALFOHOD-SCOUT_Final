@@ -30,7 +30,7 @@ const loginSchema = z.object({
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useAuth();
+  const { signIn } = useAuth();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
