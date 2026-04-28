@@ -247,7 +247,7 @@ export default function Store() {
                     <div>
                       <div className="flex items-center justify-between mb-6">
                         <h2 className="text-2xl font-black text-primary">وصل حديثاً</h2>
-                        <Link href="#" className="text-secondary font-bold text-sm hover:underline">عرض الكل</Link>
+                        <Link href="/store/c/new-in" className="text-secondary font-bold text-sm hover:underline" data-testid="link-view-all-new">عرض الكل</Link>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {newProducts.map((p, i) => (
@@ -262,7 +262,7 @@ export default function Store() {
                     <div>
                       <div className="flex items-center justify-between mb-6">
                         <h2 className="text-2xl font-black text-primary">الأكثر مبيعاً</h2>
-                        <Link href="#" className="text-secondary font-bold text-sm hover:underline">عرض الكل</Link>
+                        <Link href="/store" className="text-secondary font-bold text-sm hover:underline" data-testid="link-view-all-best">عرض الكل</Link>
                       </div>
                       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                         {bestSellers.map((p, i) => (

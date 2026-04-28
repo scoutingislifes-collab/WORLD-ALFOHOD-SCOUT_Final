@@ -1,6 +1,22 @@
-import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { PawPrint, Mail, MapPin, Phone } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { SiFacebook, SiX, SiInstagram, SiYoutube } from "react-icons/si";
+
+const QUICK_LINKS = [
+  { label: "من نحن", href: "/about" },
+  { label: "ما نقوم به", href: "/what-we-do" },
+  { label: "الأكاديمية", href: "/academy" },
+  { label: "الألعاب", href: "/games" },
+  { label: "التطوع", href: "/get-involved" },
+  { label: "اتصل بنا", href: "/contact" },
+];
+
+const SOCIAL_LINKS = [
+  { label: "Facebook",  href: "https://facebook.com",  icon: SiFacebook },
+  { label: "Twitter",   href: "https://twitter.com",   icon: SiX },
+  { label: "Instagram", href: "https://instagram.com", icon: SiInstagram },
+  { label: "Youtube",   href: "https://youtube.com",   icon: SiYoutube },
+];
 
 export function Footer() {
   return (
@@ -8,31 +24,40 @@ export function Footer() {
       <div className="container mx-auto px-4 md:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-12 mb-16">
           <div className="col-span-1 md:col-span-2">
-            <div className="flex items-center gap-2 mb-6">
+            <Link href="/" className="flex items-center gap-2 mb-6 hover:opacity-90 transition-opacity" data-testid="link-footer-home">
               <PawPrint className="h-10 w-10 text-secondary" strokeWidth={2.5} />
               <span className="font-black text-3xl tracking-tight">عالم الفهود</span>
-            </div>
+            </Link>
             <p className="text-white/70 text-lg leading-relaxed max-w-md mb-8 font-medium">
               حركة شبابية عالمية تهدف إلى تمكين الشباب وبناء قادة المستقبل. نؤمن بأن كل شاب يمتلك القدرة على تغيير العالم.
             </p>
             <div className="flex gap-4">
-              {/* Social icons placeholders */}
-              {[1, 2, 3, 4].map((i) => (
-                <a key={i} href="#" className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors">
-                  <div className="w-5 h-5 bg-white/50 rounded-sm" />
+              {SOCIAL_LINKS.map(({ label, href, icon: Icon }) => (
+                <a
+                  key={label}
+                  href={href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={label}
+                  className="w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-secondary transition-colors"
+                  data-testid={`link-social-${label.toLowerCase()}`}
+                >
+                  <Icon className="h-5 w-5 text-white" />
                 </a>
               ))}
             </div>
           </div>
-          
+
           <div>
             <h4 className="text-xl font-bold mb-6 text-secondary">روابط سريعة</h4>
             <ul className="space-y-4 text-lg font-medium text-white/80">
-              <li><a href="#" className="hover:text-white transition-colors">من نحن</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">ما نقوم به</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">المخيم العالمي</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">التطوع</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">اتصل بنا</a></li>
+              {QUICK_LINKS.map(link => (
+                <li key={link.href}>
+                  <Link href={link.href} className="hover:text-white transition-colors" data-testid={`link-footer-${link.href.replace("/", "")}`}>
+                    {link.label}
+                  </Link>
+                </li>
+              ))}
             </ul>
           </div>
           

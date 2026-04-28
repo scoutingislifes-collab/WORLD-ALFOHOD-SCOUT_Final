@@ -11,6 +11,7 @@ import { ProductCard } from "@/components/store/ProductCard";
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function ProductDetail() {
   const { slug } = useParams();
@@ -161,7 +162,38 @@ export default function ProductDetail() {
                   <div className="space-y-3">
                     <div className="flex items-center justify-between">
                       <div className="font-bold text-primary">المقاس: <span className="text-muted-foreground font-normal">{selectedSize}</span></div>
-                      <Link href="#" className="text-sm text-secondary font-bold hover:underline">دليل المقاسات</Link>
+                      <Dialog>
+                        <DialogTrigger asChild>
+                          <button type="button" className="text-sm text-secondary font-bold hover:underline" data-testid="button-size-guide">
+                            دليل المقاسات
+                          </button>
+                        </DialogTrigger>
+                        <DialogContent className="max-w-md">
+                          <DialogHeader>
+                            <DialogTitle>دليل المقاسات</DialogTitle>
+                          </DialogHeader>
+                          <div className="space-y-3 text-sm">
+                            <p className="text-muted-foreground">اختر المقاس المناسب وفقاً للمحيط والطول التقريبي.</p>
+                            <table className="w-full border-collapse">
+                              <thead>
+                                <tr className="bg-muted">
+                                  <th className="border p-2 text-right">المقاس</th>
+                                  <th className="border p-2 text-right">الصدر (سم)</th>
+                                  <th className="border p-2 text-right">الطول (سم)</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                <tr><td className="border p-2">XS</td><td className="border p-2">82-86</td><td className="border p-2">62</td></tr>
+                                <tr><td className="border p-2">S</td><td className="border p-2">86-92</td><td className="border p-2">66</td></tr>
+                                <tr><td className="border p-2">M</td><td className="border p-2">92-98</td><td className="border p-2">70</td></tr>
+                                <tr><td className="border p-2">L</td><td className="border p-2">98-106</td><td className="border p-2">74</td></tr>
+                                <tr><td className="border p-2">XL</td><td className="border p-2">106-114</td><td className="border p-2">78</td></tr>
+                              </tbody>
+                            </table>
+                            <p className="text-xs text-muted-foreground">إذا كنت بين مقاسين، نوصي باختيار المقاس الأكبر للراحة.</p>
+                          </div>
+                        </DialogContent>
+                      </Dialog>
                     </div>
                     <div className="flex flex-wrap gap-3">
                       {product.sizes.map(size => (

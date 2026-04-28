@@ -41,6 +41,8 @@ import Academy from "@/pages/Academy";
 import AcademyCourse from "@/pages/AcademyCourse";
 import AcademyLearn from "@/pages/AcademyLearn";
 import InstructorDashboard from "@/pages/InstructorDashboard";
+import Terms from "@/pages/Terms";
+import Privacy from "@/pages/Privacy";
 
 const queryClient = new QueryClient();
 
@@ -78,6 +80,8 @@ function Router() {
       <Route path="/verify-email" component={VerifyEmail} />
       <Route path="/account" component={Account} />
       <Route path="/instructor" component={InstructorDashboard} />
+      <Route path="/terms" component={Terms} />
+      <Route path="/privacy" component={Privacy} />
       <Route component={NotFound} />
     </Switch>
   );

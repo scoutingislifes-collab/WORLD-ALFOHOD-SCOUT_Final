@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { Link } from "wouter";
 import { ArrowLeft, Compass, Users, Heart, Sprout, Shield } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 
@@ -7,26 +8,31 @@ const pillars = [
     icon: <Compass className="h-10 w-10 text-secondary" />,
     title: "التعليم والمهارات",
     description: "تطوير مهارات حياتية عملية من خلال التعلم بالممارسة والمغامرات في الطبيعة.",
+    href: "/academy",
   },
   {
     icon: <Heart className="h-10 w-10 text-secondary" />,
     title: "السلام والتعايش",
     description: "بناء جسور التواصل بين الثقافات وتعزيز التفاهم المتبادل بين شعوب العالم.",
+    href: "/programmes/messengers-of-peace",
   },
   {
     icon: <Sprout className="h-10 w-10 text-secondary" />,
     title: "حماية البيئة",
     description: "قيادة مبادرات الاستدامة والمحافظة على كوكب الأرض للأجيال القادمة.",
+    href: "/programmes/earth-tribe",
   },
   {
     icon: <Shield className="h-10 w-10 text-secondary" />,
     title: "القيادة والتمكين",
     description: "إعداد قادة شباب قادرين على اتخاذ القرارات وصنع التغيير الإيجابي.",
+    href: "/programmes/youth-leadership",
   },
   {
     icon: <Users className="h-10 w-10 text-secondary" />,
     title: "الخدمة المجتمعية",
     description: "المساهمة الفاعلة في تنمية المجتمعات المحلية ودعم الفئات الأكثر حاجة.",
+    href: "/get-involved",
   }
 ];
 
@@ -73,10 +79,14 @@ export function Pillars() {
                   <p className="text-muted-foreground text-lg leading-relaxed mb-6">
                     {pillar.description}
                   </p>
-                  <a href="#" className="inline-flex items-center text-secondary font-bold text-lg hover:text-primary transition-colors">
+                  <Link
+                    href={pillar.href}
+                    className="inline-flex items-center text-secondary font-bold text-lg hover:text-primary transition-colors"
+                    data-testid={`link-pillar-${index}`}
+                  >
                     اقرأ المزيد
                     <ArrowLeft className="mr-2 h-5 w-5" />
-                  </a>
+                  </Link>
                 </CardContent>
               </Card>
             </motion.div>
