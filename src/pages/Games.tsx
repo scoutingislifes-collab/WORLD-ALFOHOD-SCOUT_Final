@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useToast } from "@/hooks/use-toast";
 import { Trophy, RotateCcw, Star, Zap, Brain, Target, Puzzle, Users, ChevronLeft, CheckCircle, XCircle, Clock } from "lucide-react";
+import { ScoreSavePrompt } from "@/components/games/ScoreSavePrompt";
+import { LeaderboardPanel } from "@/components/games/LeaderboardPanel";
 
 // ─── Scout Trivia ───────────────────────────────────────────────────────────
 const TRIVIA = [
@@ -50,6 +52,7 @@ function ScoutTrivia() {
       <p className="text-5xl font-black text-secondary mb-1">{score} / {TRIVIA.length}</p>
       <p className="text-muted-foreground mb-8">{score >= 6 ? "خبير كشفي حقيقي! 🎖️" : score >= 4 ? "أداء جيد، واصل التعلم 📚" : "لا بأس، حاول مرة أخرى 💪"}</p>
       <Button onClick={restart} className="bg-primary text-white gap-2 rounded-full px-8"><RotateCcw className="h-4 w-4" /> العب مجدداً</Button>
+      <ScoreSavePrompt gameId="trivia" score={score} detail={`${score} / ${TRIVIA.length}`} />
     </motion.div>
   );
 
@@ -137,6 +140,7 @@ function MemoryGame() {
         <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} className="bg-green-50 border border-green-200 rounded-2xl p-4 text-center mb-6">
           <div className="text-4xl mb-2">🏆</div>
           <p className="font-black text-green-700 text-lg">رائع! فزت في {moves} محاولة</p>
+          <ScoreSavePrompt gameId="memory" score={moves} detail={`${moves} محاولة`} />
         </motion.div>
       )}
       <div className="grid grid-cols-4 gap-3">
@@ -282,6 +286,7 @@ function NumberGuess() {
           <div className="text-6xl mb-3">🏆</div>
           <p className="font-black text-green-700 text-xl">أحسنت! الرقم {secret} في {tries} محاولة</p>
           <Button onClick={restart} className="mt-4 bg-primary text-white rounded-full px-8 gap-2"><RotateCcw className="h-4 w-4" /> جولة جديدة</Button>
+          <ScoreSavePrompt gameId="numguess" score={tries} detail={`فاز بـ ${tries} محاولة`} />
         </motion.div>
       ) : lost ? (
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="text-center py-4">
@@ -394,6 +399,7 @@ function ColorMemory() {
               <p className="font-black text-red-600 text-xl mb-1">خسرت!</p>
               <p className="text-muted-foreground mb-6">وصلت للجولة {round} بـ {score} نقطة</p>
               <Button onClick={start} className="bg-primary text-white rounded-full px-8 gap-2"><RotateCcw className="h-4 w-4" /> مجدداً</Button>
+              {score > 0 && <ScoreSavePrompt gameId="color" score={score} detail={`وصل للجولة ${round}`} />}
             </motion.div>
           ) : (
             <>
@@ -471,6 +477,7 @@ function WordScramble() {
       <h3 className="text-2xl font-black text-primary mb-2">انتهت اللعبة!</h3>
       <p className="text-4xl font-black text-secondary mb-6">{score} / {SCOUT_WORDS.length}</p>
       <Button onClick={restart} className="bg-primary text-white rounded-full px-8 gap-2"><RotateCcw className="h-4 w-4" /> مجدداً</Button>
+      <ScoreSavePrompt gameId="word" score={score} detail={`${score} / ${SCOUT_WORDS.length}`} />
     </motion.div>
   );
 
@@ -612,39 +619,47 @@ export default function Games() {
             </div>
           </div>
 
-          {/* Game cards grid */}
+          {/* Game cards grid + leaderboard */}
           {!activeGame && (
-            <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6" layout>
-              <AnimatePresence>
-                {filtered.map(game => (
-                  <motion.div
-                    key={game.id}
-                    layout
-                    initial={{ opacity: 0, y: 20 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    className="bg-white rounded-3xl border border-primary/10 shadow-sm hover:shadow-xl transition-all overflow-hidden group cursor-pointer"
-                    onClick={() => setActiveGame(game.id)}
-                    whileHover={{ y: -4 }}
-                  >
-                    <div className="h-32 flex items-center justify-center text-7xl relative" style={{ backgroundColor: game.color + "20" }}>
-                      <motion.span whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }} transition={{ duration: 0.4 }}>{game.emoji}</motion.span>
-                      <div className="absolute top-3 right-3 flex gap-1">
-                        <Badge className="text-xs" style={{ backgroundColor: game.color, color: "white" }}>{game.category}</Badge>
-                        {game.forKids && <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-700">أطفال</Badge>}
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_360px] gap-6 items-start">
+              <motion.div className="grid grid-cols-1 sm:grid-cols-2 gap-6" layout>
+                <AnimatePresence>
+                  {filtered.map(game => (
+                    <motion.div
+                      key={game.id}
+                      layout
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      className="bg-white rounded-3xl border border-primary/10 shadow-sm hover:shadow-xl transition-all overflow-hidden group cursor-pointer"
+                      onClick={() => setActiveGame(game.id)}
+                      whileHover={{ y: -4 }}
+                      data-testid={`card-game-${game.id}`}
+                    >
+                      <div className="h-32 flex items-center justify-center text-7xl relative" style={{ backgroundColor: game.color + "20" }}>
+                        <motion.span whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }} transition={{ duration: 0.4 }}>{game.emoji}</motion.span>
+                        <div className="absolute top-3 right-3 flex gap-1">
+                          <Badge className="text-xs" style={{ backgroundColor: game.color, color: "white" }}>{game.category}</Badge>
+                          {game.forKids && <Badge variant="secondary" className="text-xs bg-amber-100 text-amber-700">أطفال</Badge>}
+                        </div>
                       </div>
-                    </div>
-                    <div className="p-6">
-                      <h3 className="text-xl font-black text-primary mb-2">{game.title}</h3>
-                      <p className="text-sm text-muted-foreground">{game.desc}</p>
-                      <div className="mt-4 flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">
-                        العب الآن <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+                      <div className="p-6">
+                        <h3 className="text-xl font-black text-primary mb-2">{game.title}</h3>
+                        <p className="text-sm text-muted-foreground">{game.desc}</p>
+                        <div className="mt-4 flex items-center gap-2 text-primary font-bold text-sm group-hover:gap-3 transition-all">
+                          العب الآن <ChevronLeft className="h-4 w-4 group-hover:-translate-x-1 transition-transform" />
+                        </div>
                       </div>
-                    </div>
-                  </motion.div>
-                ))}
-              </AnimatePresence>
-            </motion.div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </motion.div>
+
+              {/* Leaderboard sidebar */}
+              <div className="lg:sticky lg:top-20">
+                <LeaderboardPanel />
+              </div>
+            </div>
           )}
 
           {/* Active game view */}
