@@ -80,10 +80,10 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md" dir="rtl">
-      <div className="container mx-auto flex h-16 items-center justify-between gap-4 px-4 md:px-6">
+      <div className="container mx-auto flex h-16 items-center gap-2 md:gap-3 lg:gap-4 px-4 md:px-6">
 
         {/* Logo — far right in RTL */}
-        <Link href="/" className="flex items-center gap-2 text-primary hover:opacity-90 transition-opacity shrink-0">
+        <Link href="/" className="flex items-center gap-2 text-primary hover:opacity-90 transition-opacity shrink-0 ms-0 me-3 md:me-4 lg:me-6 xl:me-8" data-testid="link-logo-home">
           <PawPrint className="h-6 w-6 text-secondary shrink-0" strokeWidth={2.5} />
           <div className="leading-tight">
             <div className="font-black text-base lg:text-lg tracking-tight whitespace-nowrap">عالم الفهود</div>
@@ -91,8 +91,8 @@ export function Header() {
           </div>
         </Link>
 
-        {/* Desktop Nav — center */}
-        <nav className="hidden md:flex flex-1 items-center justify-center gap-0 min-w-0 overflow-hidden">
+        {/* Desktop Nav — fills remaining space */}
+        <nav className="hidden md:flex flex-1 items-center justify-start gap-0.5 lg:gap-1 min-w-0">
           {mainLinks.map((link) => (
             link.children ? (
               <DropdownMenu key={link.name} dir="rtl">
