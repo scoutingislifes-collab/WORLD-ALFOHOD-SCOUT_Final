@@ -4,6 +4,7 @@ import { requireAuth } from "./auth";
 import {
   insertUserSchema, loginSchema, insertOrderSchema,
   insertProgressSchema, insertLeaderboardSchema, insertContactSchema,
+  userPreferencesSchema,
 } from "../shared/schema";
 import { ZodError } from "zod";
 
@@ -110,6 +111,27 @@ export function buildRoutes() {
       await storage.clearLeaderboardByGame(req.params.gameKey);
       res.json({ ok: true });
     } catch (e) { handleError(res, e); }
+  });
+
+  // ===== User Preferences (auto-sync from i18n / a11y / theme) =====
+  r.get("/preferences", requireAuth, async (req, res) => {
+    try {
+      const prefs = await storage.getUserPreferences(req.session.userId!);
+      res.json({ preferences: prefs });
+    } catch (e) { handleError(res, e); }
+  });
+
+  r.put("/preferences", requireAuth, async (req, res) => {
+    try {
+      const data = userPreferencesSchema.parse(req.body);
+      const prefs = await storage.upsertUserPreferences(req.session.userId!, data);
+      res.json({ preferences: prefs });
+    } catch (e) { handleError(res, e); }
+  });
+
+  // ===== Health (used by self-healing client) =====
+  r.get("/health", (_req, res) => {
+    res.json({ ok: true, ts: Date.now() });
   });
 
   // ===== Contact =====

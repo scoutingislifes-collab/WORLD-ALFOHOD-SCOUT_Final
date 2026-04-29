@@ -1,12 +1,13 @@
 import { db, pool } from "./db";
 import { and, desc, eq, sql } from "drizzle-orm";
 import {
-  users, orders, orderItems, academyProgress, leaderboardEntries, contactMessages,
+  users, orders, orderItems, academyProgress, leaderboardEntries, contactMessages, userPreferences,
   type User, type InsertUser, type PublicUser,
   type Order, type OrderItem, type InsertOrder, type OrderWithItems,
   type Progress, type InsertProgress,
   type LeaderboardEntry, type InsertLeaderboard,
   type ContactMessage, type InsertContact,
+  type UserPreferences, type UserPreferencesInput,
 } from "../shared/schema";
 import bcrypt from "bcryptjs";
 
@@ -32,6 +33,9 @@ export interface IStorage {
   clearLeaderboardByGame(gameKey: string): Promise<void>;
 
   createContact(input: InsertContact): Promise<ContactMessage>;
+
+  getUserPreferences(userId: number): Promise<UserPreferences>;
+  upsertUserPreferences(userId: number, patch: UserPreferencesInput): Promise<UserPreferences>;
 }
 
 class DbStorage implements IStorage {
@@ -132,6 +136,42 @@ class DbStorage implements IStorage {
 
   async createContact(input: InsertContact): Promise<ContactMessage> {
     const [row] = await db.insert(contactMessages).values(input).returning();
+    return row;
+  }
+
+  async getUserPreferences(userId: number): Promise<UserPreferences> {
+    const [row] = await db.select().from(userPreferences).where(eq(userPreferences.userId, userId));
+    if (row) return row;
+    const [created] = await db
+      .insert(userPreferences)
+      .values({ userId })
+      .onConflictDoNothing({ target: userPreferences.userId })
+      .returning();
+    if (created) return created;
+    const [again] = await db.select().from(userPreferences).where(eq(userPreferences.userId, userId));
+    return again;
+  }
+
+  async upsertUserPreferences(userId: number, patch: UserPreferencesInput): Promise<UserPreferences> {
+    const next: Record<string, unknown> = { userId, updatedAt: sql`NOW()` };
+    if (patch.language !== undefined) next.language = patch.language;
+    if (patch.signLanguageMode !== undefined) {
+      next.signLanguageMode = typeof patch.signLanguageMode === "boolean"
+        ? (patch.signLanguageMode ? 1 : 0)
+        : patch.signLanguageMode;
+    }
+    if (patch.theme !== undefined) next.theme = patch.theme;
+
+    const updateSet: Record<string, unknown> = { updatedAt: sql`NOW()` };
+    for (const k of ["language", "signLanguageMode", "theme"] as const) {
+      if (k in next) updateSet[k] = next[k];
+    }
+
+    const [row] = await db
+      .insert(userPreferences)
+      .values(next as any)
+      .onConflictDoUpdate({ target: userPreferences.userId, set: updateSet })
+      .returning();
     return row;
   }
 }

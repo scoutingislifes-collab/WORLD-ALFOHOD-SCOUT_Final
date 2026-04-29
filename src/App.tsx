@@ -9,6 +9,8 @@ import { ThemeProvider } from "@/context/ThemeContext";
 import { FloatingSignLanguageButton } from "@/components/accessibility/FloatingSignLanguageButton";
 import { PWAInstallPrompt } from "@/components/layout/PWAInstallPrompt";
 import { SeoHead } from "@/components/layout/SeoHead";
+import { ConnectionStatus } from "@/components/layout/ConnectionStatus";
+import { usePreferencesSync } from "@/hooks/usePreferencesSync";
 
 import NotFound from "@/pages/not-found";
 import { LandingPage } from "@/components/landing/LandingPage";
@@ -90,6 +92,11 @@ function Router() {
   );
 }
 
+function PreferencesBridge() {
+  usePreferencesSync();
+  return null;
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
@@ -99,10 +106,12 @@ function App() {
             <AuthProvider>
               <CartProvider>
                 <SeoHead />
+                <PreferencesBridge />
                 <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
                   <Router />
                   <FloatingSignLanguageButton />
                   <PWAInstallPrompt />
+                  <ConnectionStatus />
                 </WouterRouter>
               </CartProvider>
             </AuthProvider>

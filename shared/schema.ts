@@ -68,6 +68,14 @@ export const leaderboardEntries = pgTable("leaderboard_entries", {
   gameIdx: index("leaderboard_game_idx").on(table.gameKey, table.score),
 }));
 
+export const userPreferences = pgTable("user_preferences", {
+  userId: integer("user_id").primaryKey().references(() => users.id, { onDelete: "cascade" }),
+  language: varchar("language", { length: 10 }).notNull().default("ar"),
+  signLanguageMode: integer("sign_language_mode").notNull().default(0),
+  theme: varchar("theme", { length: 16 }).notNull().default("light"),
+  updatedAt: timestamp("updated_at").notNull().defaultNow(),
+});
+
 export const contactMessages = pgTable("contact_messages", {
   id: serial("id").primaryKey(),
   name: varchar("name", { length: 255 }).notNull(),
@@ -134,6 +142,17 @@ export const insertLeaderboardSchema = createInsertSchema(leaderboardEntries).om
 });
 export type InsertLeaderboard = z.infer<typeof insertLeaderboardSchema>;
 export type LeaderboardEntry = typeof leaderboardEntries.$inferSelect;
+
+export const userPreferencesSchema = z.object({
+  language: z.enum([
+    "ar","en","fr","es","de","zh","ru","pt","it","tr",
+    "ja","ko","hi","id","ms","nl","fa","he","ur","sw",
+  ]).optional(),
+  signLanguageMode: z.union([z.literal(0), z.literal(1), z.boolean()]).optional(),
+  theme: z.enum(["light", "dark"]).optional(),
+});
+export type UserPreferencesInput = z.infer<typeof userPreferencesSchema>;
+export type UserPreferences = typeof userPreferences.$inferSelect;
 
 export const insertContactSchema = createInsertSchema(contactMessages).omit({
   id: true,

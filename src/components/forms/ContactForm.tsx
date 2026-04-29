@@ -34,8 +34,7 @@ export function ContactForm() {
 
   const submit = useMutation({
     mutationFn: async (values: FormValues) => {
-      const res = await apiRequest("POST", "/api/contact", values);
-      return res.json();
+      return await apiRequest("POST", "/api/contact", values);
     },
     onSuccess: () => {
       toast({

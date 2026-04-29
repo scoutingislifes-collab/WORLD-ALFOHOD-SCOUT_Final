@@ -59,6 +59,25 @@ vite.config.ts      — Vite config (requires PORT and BASE_PATH env vars)
   canonical, and `hreflang` for all 20 supported languages on every route change.
 - **Contact form**: `ContactForm` now POSTs to `/api/contact` via TanStack
   `useMutation` + `apiRequest`, with loading state and error toasts.
+- **Frontend↔backend bridge & self-healing (April 29 2026)**:
+  - New `user_preferences` table (one row per user) holding `language`,
+    `signLanguageMode`, `theme`, `updatedAt`.
+  - New API: `GET/PUT /api/preferences` (auth-required) and `GET /api/health`.
+  - `usePreferencesSync` hook (mounted in `App` as `<PreferencesBridge />`)
+    pulls preferences once after sign-in and applies them to i18n / a11y / theme;
+    then debounces writes back to the server whenever the user changes any of
+    them. Game scores (`/api/leaderboard`) and academy progress
+    (`/api/academy/progress`) were already wired to the database.
+  - `apiRequest` and the default query function now retry with exponential
+    backoff (up to 4 attempts, capped at ~3s) on 408/425/429/5xx and on network
+    errors, and pause until `navigator.onLine` returns true.
+  - TanStack Query mutations use `networkMode: "offlineFirst"`, smart 4xx-skip
+    retries, and resume automatically on reconnect.
+  - `<ConnectionStatus />` polls `/api/health` (every 60s healthy / 5s unhealthy),
+    listens to the browser online/offline events, shows toasts on transitions,
+    and invalidates queries + resumes paused mutations once the server is back.
+  - All of the above ships as a single Express app that serves both the API and
+    the built React bundle on one port — `npm run build` then `npm start`.
 
 ## Running the App
 
