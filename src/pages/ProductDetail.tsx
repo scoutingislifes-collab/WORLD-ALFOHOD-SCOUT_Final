@@ -8,6 +8,8 @@ import { useCart } from "@/components/store/cartContext";
 import { CartDrawer } from "@/components/store/CartDrawer";
 import { useState } from "react";
 import { ProductCard } from "@/components/store/ProductCard";
+import { Carousel3D, Carousel3DItem } from "@/components/store/Carousel3D";
+import { LiveActivityFeed } from "@/components/store/LiveActivityFeed";
 import { motion } from "framer-motion";
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/accordion";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -357,23 +359,22 @@ export default function ProductDetail() {
         </div>
       </section>
 
-      {/* Related Products */}
+      {/* Related Products – 3D Carousel */}
       {relatedProducts.length > 0 && (
-        <section className="py-20 bg-muted/10 border-t border-border/50">
-          <div className="container mx-auto px-4 md:px-8">
-            <h2 className="text-3xl font-black text-primary mb-10 text-center">قد يعجبك أيضاً</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-              {relatedProducts.map((p, i) => (
-                <motion.div key={p.id} initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} transition={{ delay: i * 0.1 }}>
-                  <ProductCard product={p} />
-                </motion.div>
-              ))}
-            </div>
-          </div>
-        </section>
+        <Carousel3D
+          title="قد يعجبك أيضاً"
+          items={relatedProducts.map<Carousel3DItem>(p => ({
+            id: p.id,
+            title: p.name,
+            subtitle: p.category,
+            image: p.image,
+            href: `/store/p/${p.slug}`,
+          }))}
+        />
       )}
 
       <CartDrawer />
+      <LiveActivityFeed />
     </SiteLayout>
   );
 }

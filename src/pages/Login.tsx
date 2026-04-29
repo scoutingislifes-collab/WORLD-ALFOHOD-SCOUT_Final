@@ -45,32 +45,15 @@ export default function Login() {
 
   async function onSubmit(values: z.infer<typeof loginSchema>) {
     setIsLoading(true);
-    
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 800));
-
     try {
-      const storedUsers = localStorage.getItem("cheetahs_users");
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
-      
-      const user = users.find(
-        (u: any) => u.email === values.email && u.password === values.password
-      );
-
-      if (user) {
-        // Strip password before saving to session
-        const { password, ...safeUser } = user;
-        dispatch({ type: "SIGN_IN", payload: safeUser });
-        setLocation("/account");
-      } else {
-        toast({
-          variant: "destructive",
-          title: "فشل تسجيل الدخول",
-          description: "بيانات الدخول غير صحيحة. يرجى المحاولة مرة أخرى.",
-        });
-      }
-    } catch (error) {
-      console.error(error);
+      await signIn(values.email, values.password);
+      setLocation("/account");
+    } catch (error: any) {
+      toast({
+        variant: "destructive",
+        title: "فشل تسجيل الدخول",
+        description: error?.message || "بيانات الدخول غير صحيحة. يرجى المحاولة مرة أخرى.",
+      });
     } finally {
       setIsLoading(false);
     }

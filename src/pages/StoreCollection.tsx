@@ -6,8 +6,11 @@ import { products } from "@/data/products";
 import NotFound from "./not-found";
 import { ProductCard } from "@/components/store/ProductCard";
 import { CartDrawer } from "@/components/store/CartDrawer";
+import { CinematicHeroSlider, CinematicSlide } from "@/components/store/CinematicHeroSlider";
+import { OffersTicker } from "@/components/store/OffersTicker";
+import { LiveActivityFeed } from "@/components/store/LiveActivityFeed";
 import { Button } from "@/components/ui/button";
-import { Search, SlidersHorizontal, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronLeft, ChevronRight, ArrowLeft, Sparkles, Flame } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
@@ -101,49 +104,46 @@ export default function StoreCollection() {
 
   const otherCollections = collections.filter(c => c.slug !== collection.slug).slice(0, 4);
 
+  // Build dedicated cinematic slides for THIS department
+  const heroSlides: CinematicSlide[] = [
+    {
+      id: `${collection.slug}-intro`,
+      badge: collection.subtitleAr,
+      title: collection.titleAr,
+      subtitle: collection.descriptionAr,
+      ctaLabel: "تسوق المجموعة",
+      ctaHref: `#product-grid`,
+      image: collection.heroImage,
+      accent: "#D4AF37",
+      background: "linear-gradient(135deg, #050505 0%, #1a1408 50%, #050505 100%)",
+    },
+    ...featuredProducts.slice(0, 3).map((p, i) => ({
+      id: p.id,
+      badge: p.tag === "الأكثر مبيعاً" ? "أكثر مبيعاً" : p.tag === "جديد" ? "وصل حديثاً" : "مميز",
+      title: p.name,
+      subtitle: p.description,
+      ctaLabel: "اعرف أكثر",
+      ctaHref: `/store/p/${p.slug}`,
+      image: p.image,
+      accent: ["#F5E199", "#E6C56C", "#D4AF37"][i],
+      background: i % 2 === 0
+        ? "linear-gradient(135deg, #050505 0%, #2a1a08 50%, #050505 100%)"
+        : "linear-gradient(135deg, #050505 0%, #1a1408 50%, #050505 100%)",
+    })),
+  ];
+
   return (
     <SiteLayout>
-      {/* Hero Banner */}
-      <div className="relative pt-32 pb-20 overflow-hidden bg-primary text-white flex flex-col justify-center min-h-[50vh]">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 z-10" style={{ background: `linear-gradient(to right, ${collection.accent}dd, #4D006Edd)` }} />
-          <img
-            src={collection.heroImage}
-            alt={collection.titleAr}
-            className="w-full h-full object-cover object-center opacity-60 mix-blend-multiply"
-          />
-        </div>
-        <div className="container relative z-20 mx-auto px-4 md:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <nav className="flex items-center justify-center gap-2 text-sm font-medium text-white/70 mb-6">
-              <Link href="/" className="hover:text-white transition-colors">الرئيسية</Link>
-              <ChevronLeft className="h-4 w-4" />
-              <Link href="/store" className="hover:text-white transition-colors">المتجر</Link>
-              <ChevronLeft className="h-4 w-4" />
-              <span className="text-white">{collection.titleAr}</span>
-            </nav>
-            <span className="inline-block px-4 py-1.5 rounded-full text-sm font-bold bg-white/20 text-white mb-4 backdrop-blur-md border border-white/30">
-              {collection.subtitleAr}
-            </span>
-            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">{collection.titleAr}</h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed mb-10">
-              {collection.descriptionAr}
-            </p>
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-              <Button size="lg" className="bg-white text-primary hover:bg-white/90 text-lg h-14 px-8 rounded-full font-bold" onClick={() => {
-                document.getElementById('product-grid')?.scrollIntoView({ behavior: 'smooth' });
-              }}>
-                تسوق الآن
-              </Button>
-              <Link href="/store">
-                <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white text-lg h-14 px-8 rounded-full font-bold">
-                  عرض كل المنتجات
-                </Button>
-              </Link>
-            </div>
-          </motion.div>
-        </div>
-      </div>
+      <CinematicHeroSlider slides={heroSlides} />
+
+      <OffersTicker
+        items={[
+          { id: "tc1", icon: "tag", text: `عروض حصرية على ${collection.titleAr} هذا الأسبوع` },
+          { id: "tc2", icon: "sparkles", text: `${collectionProducts.length} منتجاً متوفراً الآن` },
+          { id: "tc3", icon: "bell", text: "اشترك بالنشرة لتصلك العروض أولاً" },
+          { id: "tc4", icon: "youtube", text: "مراجعات مفصّلة على قناة سكاوت تيوب" },
+        ]}
+      />
 
       <section className="py-16 bg-white" id="product-grid">
         <div className="container mx-auto px-4 md:px-8">
@@ -380,6 +380,7 @@ export default function StoreCollection() {
       </section>
 
       <CartDrawer />
+      <LiveActivityFeed />
     </SiteLayout>
   );
 }

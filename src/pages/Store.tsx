@@ -1,13 +1,15 @@
 import { useState, useMemo } from "react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { PageHero } from "@/components/layout/PageHero";
 import { ProductCard } from "@/components/store/ProductCard";
 import { CartDrawer } from "@/components/store/CartDrawer";
+import { CinematicHeroSlider, CinematicSlide } from "@/components/store/CinematicHeroSlider";
+import { OffersTicker } from "@/components/store/OffersTicker";
+import { BentoGrid, BentoItem } from "@/components/store/BentoGrid";
+import { LiveActivityFeed } from "@/components/store/LiveActivityFeed";
 import { products } from "@/data/products";
 import { collections } from "@/data/collections";
-import storeBannerImg from "@/assets/images/store-banner.png";
 import { Button } from "@/components/ui/button";
-import { Search, SlidersHorizontal, ChevronLeft, ChevronRight, ArrowLeft } from "lucide-react";
+import { Search, SlidersHorizontal, ChevronLeft, ChevronRight, ArrowLeft, Compass, Baby, Award, Sparkles, BookOpen, Briefcase } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Slider } from "@/components/ui/slider";
 import { Switch } from "@/components/ui/switch";
@@ -76,29 +78,57 @@ export default function Store() {
     setCurrentPage(1);
   }, [selectedCategory, searchQuery, priceRange, inStockOnly, sortBy]);
 
+  // Build cinematic slides from featured products
+  const featured = [...bestSellers, ...newProducts].slice(0, 4);
+  const heroSlides: CinematicSlide[] = featured.map((p, i) => ({
+    id: p.id,
+    badge: p.tag === "الأكثر مبيعاً" ? "أكثر مبيعاً" : p.tag === "جديد" ? "وصل حديثاً" : "حصري",
+    title: p.name,
+    subtitle: p.description,
+    ctaLabel: "اكتشف الآن",
+    ctaHref: `/store/p/${p.slug}`,
+    image: p.image,
+    accent: ["#D4AF37", "#F5E199", "#E6C56C", "#D4AF37"][i % 4],
+    background: i % 2 === 0
+      ? "linear-gradient(135deg, #050505 0%, #1a1408 50%, #050505 100%)"
+      : "linear-gradient(135deg, #050505 0%, #2a1a08 50%, #050505 100%)",
+  }));
+
+  // Bento grid items for departments
+  const ICON_MAP: Record<string, JSX.Element> = {
+    Sparkles: <Sparkles className="h-5 w-5" />,
+    Baby: <Baby className="h-5 w-5" />,
+    Compass: <Compass className="h-5 w-5" />,
+    BookOpen: <BookOpen className="h-5 w-5" />,
+    Briefcase: <Briefcase className="h-5 w-5" />,
+    Award: <Award className="h-5 w-5" />,
+  };
+  const bentoItems: BentoItem[] = collections.slice(0, 6).map((c, i) => ({
+    id: c.slug,
+    title: c.titleAr,
+    subtitle: c.subtitleAr,
+    href: `/store/c/${c.slug}`,
+    image: c.heroImage,
+    accent: c.accent || "#D4AF37",
+    icon: ICON_MAP[c.icon] || <Sparkles className="h-5 w-5" />,
+    span: i === 0 ? "wide" : i === 3 ? "wide" : "default",
+  }));
+
   return (
     <SiteLayout>
-      <div className="relative pt-32 pb-20 overflow-hidden bg-primary text-white flex flex-col justify-center min-h-[50vh]">
-        <div className="absolute inset-0 z-0">
-          <div className="absolute inset-0 bg-primary/80 mix-blend-multiply z-10" />
-          <img
-            src={storeBannerImg}
-            alt="مجموعة الفهود العالمية"
-            className="w-full h-full object-cover object-center opacity-70"
-          />
-        </div>
-        <div className="container relative z-20 mx-auto px-4 md:px-8 text-center">
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.6 }}>
-            <h1 className="text-5xl md:text-7xl font-black mb-6 leading-tight">مجموعة الفهود العالمية</h1>
-            <p className="text-xl md:text-2xl text-white/90 max-w-2xl mx-auto leading-relaxed mb-8">
-              اكتشف أحدث المعدات والملابس والشارات الرسمية للمغامرة القادمة.
-            </p>
-            <Button size="lg" className="bg-[#F5B041] text-primary hover:bg-[#F5B041]/90 text-lg h-14 px-8 rounded-full font-bold">
-              تسوق المجموعة
-            </Button>
-          </motion.div>
-        </div>
-      </div>
+      <CinematicHeroSlider slides={heroSlides} />
+
+      <OffersTicker
+        items={[
+          { id: "t1", icon: "tag", text: "خصم 20% على الزي الرسمي حتى نهاية الأسبوع" },
+          { id: "t2", icon: "youtube", text: "قائمة تشغيل جديدة على سكاوت تيوب: مهارات التخييم المتقدمة" },
+          { id: "t3", icon: "book", text: "إصدار جديد قريباً: موسوعة العقد الكشفية الرقمية" },
+          { id: "t4", icon: "sparkles", text: "شحن مجاني للطلبات فوق 75 دولار" },
+          { id: "t5", icon: "bell", text: "افتتاح مكتب الذكاء الاصطناعي للقادة" },
+        ]}
+      />
+
+      <BentoGrid title="استكشف الأقسام" items={bentoItems} />
       
       <section className="py-12 bg-white">
         <div className="container mx-auto px-4 md:px-8">
@@ -360,6 +390,7 @@ export default function Store() {
       </section>
 
       <CartDrawer />
+      <LiveActivityFeed />
     </SiteLayout>
   );
 }

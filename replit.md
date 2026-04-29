@@ -23,6 +23,10 @@ src/
   main.tsx          — Entry point
   pages/            — Page components
   components/       — Shared components (layout, ui, landing, auth, store, etc.)
+                      Store-specific UI: CinematicHeroSlider (3D promo slider),
+                      BentoGrid (departmental highlights), OffersTicker (scrolling
+                      news/discounts), Carousel3D (related items in circular 3D
+                      motion), LiveActivityFeed (psychological live notifications).
   data/             — Static data files
   hooks/            — Custom React hooks
   lib/              — Utilities (cn, etc.)

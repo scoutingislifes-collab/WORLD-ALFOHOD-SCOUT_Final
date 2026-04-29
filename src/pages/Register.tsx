@@ -59,7 +59,7 @@ const generateColor = (email: string) => {
 export default function Register() {
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const { dispatch } = useAuth();
+  const { register: registerUser } = useAuth();
   const { toast } = useToast();
   const [, setLocation] = useLocation();
 
@@ -78,44 +78,25 @@ export default function Register() {
 
   async function onSubmit(values: z.infer<typeof registerSchema>) {
     setIsLoading(true);
-    
-    // Simulate API
-    await new Promise((resolve) => setTimeout(resolve, 1000));
-
     try {
-      const storedUsers = localStorage.getItem("cheetahs_users");
-      const users = storedUsers ? JSON.parse(storedUsers) : [];
-      
-      if (users.some((u: any) => u.email === values.email)) {
-        toast({
-          variant: "destructive",
-          title: "البريد مسجل مسبقاً",
-          description: "هذا البريد مستخدم بالفعل. يرجى تسجيل الدخول.",
-        });
-        setIsLoading(false);
-        return;
-      }
-
-      const newUser = {
-        id: Math.random().toString(36).substring(7),
+      await registerUser({
         name: values.name,
         email: values.email,
-        password: values.password, // In real app, don't store passwords plainly
-        role: values.role as UserRole,
+        password: values.password,
+        role: values.role,
         country: values.country,
-        avatarColor: generateColor(values.email),
-        joinedAt: new Date().toISOString(),
-      };
-
-      users.push(newUser);
-      localStorage.setItem("cheetahs_users", JSON.stringify(users));
-      
-      const { password, ...safeUser } = newUser;
-      dispatch({ type: "SIGN_IN", payload: safeUser });
-      
+      });
       setLocation("/verify-email");
-    } catch (error) {
-      console.error(error);
+    } catch (error: any) {
+      const msg = error?.message || "";
+      const isDup = msg.toLowerCase().includes("exist") || msg.includes("مسجل");
+      toast({
+        variant: "destructive",
+        title: isDup ? "البريد مسجل مسبقاً" : "تعذّر إنشاء الحساب",
+        description: isDup
+          ? "هذا البريد مستخدم بالفعل. يرجى تسجيل الدخول."
+          : msg || "حدث خطأ غير متوقع، حاول مرة أخرى.",
+      });
     } finally {
       setIsLoading(false);
     }
