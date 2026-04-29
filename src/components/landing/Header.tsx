@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link, useLocation } from "wouter";
+import { useTranslation } from "react-i18next";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { Menu, PawPrint, ChevronDown, ShoppingCart, User as UserIcon, LogOut, Settings, CreditCard, ShoppingBag, GraduationCap } from "lucide-react";
 import { useCart } from "../store/cartContext";
 import { useAuth } from "../auth/authContext";
+import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { isRTL } from "@/lib/i18n";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -18,6 +21,8 @@ export function Header() {
   const [, setLocation] = useLocation();
   const { state: cartState, dispatch: cartDispatch } = useCart();
   const { state: authState, dispatch: authDispatch } = useAuth();
+  const { t, i18n } = useTranslation();
+  const dir = isRTL(i18n.language) ? "rtl" : "ltr";
   
   const totalItems = cartState.items.reduce((sum, item) => sum + item.quantity, 0);
 
@@ -36,50 +41,56 @@ export function Header() {
   };
 
   const mainLinks = [
-    { name: "الرئيسية", href: "/" },
-    { name: "من نحن", href: "/about" },
-    { 
-      name: "ما نقوم به", 
+    { key: "events-hide", name: t("nav.home"), href: "/" },
+    { key: "about", name: t("nav.about"), href: "/about" },
+    {
+      key: "whatWeDo",
+      name: t("nav.whatWeDo"),
       href: "/what-we-do",
       children: [
-        { name: "نظرة عامة", href: "/what-we-do" },
-        { name: "رسل السلام", href: "/programmes/messengers-of-peace" },
-        { name: "قبيلة الأرض", href: "/programmes/earth-tribe" },
-        { name: "القيادة الشبابية", href: "/programmes/youth-leadership" }
-      ]
+        { name: t("nav.overview"), href: "/what-we-do" },
+        { name: t("nav.messengersOfPeace"), href: "/programmes/messengers-of-peace" },
+        { name: t("nav.earthTribe"), href: "/programmes/earth-tribe" },
+        { name: t("nav.youthLeadership"), href: "/programmes/youth-leadership" },
+      ],
     },
-    { name: "الأكاديمية", href: "/academy" },
-    { name: "الألعاب", href: "/games" },
-    { name: "الأخبار", href: "/news" },
-    { name: "الفعاليات", href: "/events" },
-    { name: "المناطق", href: "/regions" },
-    { 
-      name: "الموارد", 
+    { key: "academy", name: t("nav.academy"), href: "/academy" },
+    { key: "games", name: t("nav.games"), href: "/games" },
+    { key: "news", name: t("nav.news"), href: "/news" },
+    { key: "events-hide", name: t("nav.events"), href: "/events" },
+    { key: "regions-hide", name: t("nav.regions"), href: "/regions" },
+    {
+      key: "resources",
+      name: t("nav.resources"),
       href: "/resources",
       children: [
-        { name: "المكتبة", href: "/resources" },
-        { name: "الفيديوهات", href: "/videos" }
-      ]
+        { name: t("nav.library"), href: "/resources" },
+        { name: t("nav.videos"), href: "/videos" },
+      ],
     },
-    { 
-      name: "المتجر", 
+    {
+      key: "store",
+      name: t("nav.store"),
       href: "/store",
       children: [
-        { name: "كل المنتجات", href: "/store" },
-        { name: "أحدث المنتجات", href: "/store/c/new-in" },
-        { name: "للناشئة والأشبال", href: "/store/c/kids" },
-        { name: "كل ما تحتاجه القيادة", href: "/store/c/leaders" },
-        { name: "شارات العضوية والإنجاز", href: "/store/c/badges" },
-        { name: "منتجات مخصصة", href: "/store/c/personalised" },
-        { name: "معدات المغامرة", href: "/store/c/camping" },
-        { name: "مجموعة الجمبوري والفعاليات", href: "/store/c/events" },
-        { name: "هدايا عالم الفهود", href: "/store/c/gifts" }
-      ]
+        { name: t("nav.allProducts"), href: "/store" },
+        { name: t("nav.newIn"), href: "/store/c/new-in" },
+        { name: t("nav.kids"), href: "/store/c/kids" },
+        { name: t("nav.leaders"), href: "/store/c/leaders" },
+        { name: t("nav.badges"), href: "/store/c/badges" },
+        { name: t("nav.personalised"), href: "/store/c/personalised" },
+        { name: t("nav.camping"), href: "/store/c/camping" },
+        { name: t("nav.eventsCollection"), href: "/store/c/events" },
+        { name: t("nav.gifts"), href: "/store/c/gifts" },
+      ],
     },
   ];
 
+  const isHidden = (key: string) =>
+    key === "events-hide" || key === "regions-hide" ? "hidden lg:inline-flex" : "";
+
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md" dir="rtl">
+    <header className="sticky top-0 z-50 w-full border-b border-white/10 bg-background/80 backdrop-blur-md" dir={dir}>
       <div className="container mx-auto flex h-16 items-center gap-2 md:gap-3 lg:gap-4 px-4 md:px-6">
 
         {/* Logo — far right in RTL */}
@@ -93,13 +104,13 @@ export function Header() {
 
         {/* Desktop Nav — fills remaining space */}
         <nav className="hidden md:flex flex-1 items-center justify-start gap-0.5 lg:gap-1 min-w-0">
-          {mainLinks.map((link) => (
+          {mainLinks.map((link, idx) => (
             link.children ? (
-              <DropdownMenu key={link.name} dir="rtl">
+              <DropdownMenu key={`${link.key}-${idx}`} dir={dir as any}>
                 <DropdownMenuTrigger asChild>
                   <button
                     type="button"
-                    className={`inline-flex items-center gap-0.5 h-9 px-2 lg:px-2.5 rounded-md font-bold text-xs lg:text-sm text-primary hover:text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary transition-colors data-[state=open]:text-secondary group whitespace-nowrap ${link.name === "الفعاليات" || link.name === "المناطق" ? "hidden lg:inline-flex" : ""}`}
+                    className={`inline-flex items-center gap-0.5 h-9 px-2 lg:px-2.5 rounded-md font-bold text-xs lg:text-sm text-primary hover:text-secondary focus:outline-none focus-visible:ring-2 focus-visible:ring-secondary transition-colors data-[state=open]:text-secondary group whitespace-nowrap ${isHidden(link.key)}`}
                   >
                     {link.name}
                     <ChevronDown className="h-3 w-3 transition-transform group-data-[state=open]:rotate-180 shrink-0" />
@@ -109,13 +120,13 @@ export function Header() {
                   align="start"
                   sideOffset={8}
                   className="w-56 p-2 rounded-xl shadow-xl border border-border bg-card"
-                  dir="rtl"
+                  dir={dir as any}
                 >
                   {link.children.map((child) => (
                     <DropdownMenuItem key={child.name} asChild className="rounded-md p-0 focus:bg-muted">
                       <Link
                         href={child.href}
-                        className="block w-full px-3 py-2.5 font-semibold text-sm text-primary hover:text-secondary cursor-pointer text-right"
+                        className={`block w-full px-3 py-2.5 font-semibold text-sm text-primary hover:text-secondary cursor-pointer ${dir === "rtl" ? "text-right" : "text-left"}`}
                       >
                         {child.name}
                       </Link>
@@ -125,9 +136,9 @@ export function Header() {
               </DropdownMenu>
             ) : (
               <Link
-                key={link.name}
+                key={`${link.key}-${idx}`}
                 href={link.href}
-                className={`inline-flex items-center h-9 px-2 lg:px-2.5 rounded-md font-bold text-xs lg:text-sm text-primary hover:text-secondary transition-colors whitespace-nowrap ${link.name === "الفعاليات" || link.name === "المناطق" ? "hidden lg:inline-flex" : ""}`}
+                className={`inline-flex items-center h-9 px-2 lg:px-2.5 rounded-md font-bold text-xs lg:text-sm text-primary hover:text-secondary transition-colors whitespace-nowrap ${isHidden(link.key)}`}
               >
                 {link.name}
               </Link>
@@ -137,6 +148,7 @@ export function Header() {
 
         {/* Auth + Cart — far left in RTL */}
         <div className="hidden md:flex items-center gap-1.5 shrink-0">
+          <LanguageSwitcher variant="compact" />
           <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary hover:text-secondary">
             <ShoppingCart className="h-5 w-5" />
             {totalItems > 0 && (
@@ -147,7 +159,7 @@ export function Header() {
           </Button>
 
           {authState.user ? (
-            <DropdownMenu dir="rtl">
+            <DropdownMenu dir={dir as any}>
               <DropdownMenuTrigger asChild>
                 <Button variant="ghost" className="pl-0 pr-2 gap-3 h-12 rounded-full hover:bg-muted">
                   <span className="font-bold hidden lg:block">{authState.user.name.split(' ')[0]}</span>
@@ -167,32 +179,32 @@ export function Header() {
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild className="gap-2 cursor-pointer rounded-lg">
                   <Link href="/account">
-                    <UserIcon className="h-4 w-4" /> حسابي
+                    <UserIcon className="h-4 w-4" /> {t("nav.myAccount")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="gap-2 cursor-pointer rounded-lg">
                   <Link href="/account?tab=membership">
-                    <CreditCard className="h-4 w-4" /> عضويتي
+                    <CreditCard className="h-4 w-4" /> {t("nav.myMembership", "Membership")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="gap-2 cursor-pointer rounded-lg">
                   <Link href="/account?tab=orders">
-                    <ShoppingBag className="h-4 w-4" /> طلباتي
+                    <ShoppingBag className="h-4 w-4" /> {t("nav.myOrders", "Orders")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="gap-2 cursor-pointer rounded-lg">
                   <Link href="/account?tab=settings">
-                    <Settings className="h-4 w-4" /> الإعدادات
+                    <Settings className="h-4 w-4" /> {t("nav.settings", "Settings")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem asChild className="gap-2 cursor-pointer rounded-lg font-bold text-primary">
                   <Link href="/instructor">
-                    <GraduationCap className="h-4 w-4" /> لوحة المدرّب
+                    <GraduationCap className="h-4 w-4" /> {t("nav.instructorPanel", "Instructor")}
                   </Link>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem onClick={handleSignOut} className="gap-2 cursor-pointer text-destructive focus:text-destructive rounded-lg">
-                  <LogOut className="h-4 w-4" /> تسجيل الخروج
+                  <LogOut className="h-4 w-4" /> {t("nav.signOut")}
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -200,11 +212,11 @@ export function Header() {
             <div className="flex items-center gap-2">
               <Link href="/login">
                 <Button variant="ghost" className="font-bold text-sm h-10 rounded-full">
-                  تسجيل الدخول
+                  {t("nav.signIn")}
                 </Button>
               </Link>
               <Link href="/register" className="font-bold text-sm bg-secondary text-white hover:bg-secondary/90 px-5 py-2 rounded-full inline-flex items-center justify-center h-10 whitespace-nowrap">
-                انضم إلينا
+                {t("nav.joinUs")}
               </Link>
             </div>
           )}
@@ -212,6 +224,7 @@ export function Header() {
 
         {/* Mobile Nav */}
         <div className="md:hidden flex items-center gap-2">
+          <LanguageSwitcher variant="icon" />
           <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary">
             <ShoppingCart className="h-6 w-6" />
             {totalItems > 0 && (
@@ -226,17 +239,17 @@ export function Header() {
                 <Menu className="h-8 w-8" />
               </Button>
             </SheetTrigger>
-            <SheetContent side="right" className="w-[300px] flex flex-col gap-6 pt-16 overflow-y-auto">
+            <SheetContent side={dir === "rtl" ? "right" : "left"} className="w-[300px] flex flex-col gap-6 pt-16 overflow-y-auto" dir={dir}>
               <nav className="flex flex-col gap-4 font-bold text-xl">
-                {mainLinks.map((link) => (
-                  <div key={link.name}>
+                {mainLinks.map((link, idx) => (
+                  <div key={`m-${link.key}-${idx}`}>
                     {link.children ? (
                       <div className="space-y-3">
                         <div className="flex items-center justify-between text-primary/70">
                           <span>{link.name}</span>
                           <ChevronDown className="h-5 w-5" />
                         </div>
-                        <div className="flex flex-col gap-3 pr-4 border-r-2 border-border">
+                        <div className={`flex flex-col gap-3 ${dir === "rtl" ? "pr-4 border-r-2" : "pl-4 border-l-2"} border-border`}>
                           {link.children.map((child) => (
                             <Link
                               key={child.name}
@@ -278,7 +291,7 @@ export function Header() {
                     </div>
                     <Link href="/account" onClick={() => setIsOpen(false)}>
                       <Button variant="outline" className="w-full text-lg h-12 justify-start gap-3">
-                        <UserIcon className="h-5 w-5" /> حسابي
+                        <UserIcon className="h-5 w-5" /> {t("nav.myAccount")}
                       </Button>
                     </Link>
                     <Button 
@@ -289,16 +302,16 @@ export function Header() {
                         handleSignOut();
                       }}
                     >
-                      <LogOut className="h-5 w-5" /> تسجيل الخروج
+                      <LogOut className="h-5 w-5" /> {t("nav.signOut")}
                     </Button>
                   </>
                 ) : (
                   <>
                     <Link href="/login" onClick={() => setIsOpen(false)}>
-                      <Button variant="outline" className="w-full text-lg h-12">تسجيل الدخول</Button>
+                      <Button variant="outline" className="w-full text-lg h-12">{t("nav.signIn")}</Button>
                     </Link>
                     <Link href="/register" onClick={() => setIsOpen(false)}>
-                      <Button className="w-full text-lg h-12 bg-secondary text-white hover:bg-secondary/90">انضم إلينا</Button>
+                      <Button className="w-full text-lg h-12 bg-secondary text-white hover:bg-secondary/90">{t("nav.joinUs")}</Button>
                     </Link>
                   </>
                 )}

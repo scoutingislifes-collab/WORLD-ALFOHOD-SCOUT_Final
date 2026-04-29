@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Indonesia"
+  },
+  "nav": {
+    "home": "Beranda",
+    "about": "Tentang Kami",
+    "whatWeDo": "Yang Kami Lakukan",
+    "academy": "Akademi",
+    "games": "Permainan",
+    "news": "Berita",
+    "events": "Acara",
+    "regions": "Wilayah",
+    "resources": "Sumber Daya",
+    "store": "Toko",
+    "signIn": "Masuk",
+    "joinUs": "Gabung",
+    "signOut": "Keluar",
+    "myAccount": "Akun Saya",
+    "language": "Bahasa"
+  },
+  "academy": {
+    "title": "Akademi World Alfohod",
+    "subtitle": "Belajar. Memimpin. Menginspirasi."
+  }
+}

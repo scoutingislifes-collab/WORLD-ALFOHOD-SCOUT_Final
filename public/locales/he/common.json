@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "עברית"
+  },
+  "nav": {
+    "home": "בית",
+    "about": "אודות",
+    "whatWeDo": "מה אנחנו עושים",
+    "academy": "אקדמיה",
+    "games": "משחקים",
+    "news": "חדשות",
+    "events": "אירועים",
+    "regions": "אזורים",
+    "resources": "משאבים",
+    "store": "חנות",
+    "signIn": "התחברות",
+    "joinUs": "הצטרפו",
+    "signOut": "התנתקות",
+    "myAccount": "החשבון שלי",
+    "language": "שפה"
+  },
+  "academy": {
+    "title": "אקדמיית וורלד אלפהוד",
+    "subtitle": "למד. הוביל. השרא."
+  }
+}

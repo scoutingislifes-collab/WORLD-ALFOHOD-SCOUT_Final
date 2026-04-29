@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "日本語"
+  },
+  "nav": {
+    "home": "ホーム",
+    "about": "私たちについて",
+    "whatWeDo": "活動内容",
+    "academy": "アカデミー",
+    "games": "ゲーム",
+    "news": "ニュース",
+    "events": "イベント",
+    "regions": "地域",
+    "resources": "リソース",
+    "store": "ストア",
+    "signIn": "ログイン",
+    "joinUs": "参加する",
+    "signOut": "ログアウト",
+    "myAccount": "マイアカウント",
+    "language": "言語"
+  },
+  "academy": {
+    "title": "ワールド・アルフフード・アカデミー",
+    "subtitle": "学び、導き、刺激する。"
+  }
+}

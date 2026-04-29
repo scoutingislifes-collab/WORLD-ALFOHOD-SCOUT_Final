@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Türkçe"
+  },
+  "nav": {
+    "home": "Ana Sayfa",
+    "about": "Hakkımızda",
+    "whatWeDo": "Ne Yapıyoruz",
+    "academy": "Akademi",
+    "games": "Oyunlar",
+    "news": "Haberler",
+    "events": "Etkinlikler",
+    "regions": "Bölgeler",
+    "resources": "Kaynaklar",
+    "store": "Mağaza",
+    "signIn": "Giriş Yap",
+    "joinUs": "Bize Katıl",
+    "signOut": "Çıkış",
+    "myAccount": "Hesabım",
+    "language": "Dil"
+  },
+  "academy": {
+    "title": "World Alfohod Akademisi",
+    "subtitle": "Öğren. Yönet. İlham Ver."
+  }
+}

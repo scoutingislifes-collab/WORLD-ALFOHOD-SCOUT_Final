@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 import { useQuery } from "@tanstack/react-query";
+import { useTranslation } from "react-i18next";
 import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Search, Award, Users, Sparkles, BookOpen, GraduationCap, Star, ChevronLeft, ChevronRight } from "lucide-react";
@@ -12,6 +13,7 @@ import { CourseCard } from "@/components/academy/CourseCard";
 import { academyApi } from "@/lib/academyApi";
 
 export default function Academy() {
+  const { t } = useTranslation();
   const [searchQuery, setSearchQuery] = useState("");
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("all");
@@ -76,8 +78,8 @@ export default function Academy() {
               <GraduationCap className="h-4 w-4" />
               <span>منصة التعلم الإلكتروني</span>
             </div>
-            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight">
-              أكاديمية عالم الفهود
+            <h1 className="text-4xl md:text-6xl lg:text-7xl font-black mb-6 leading-tight" data-testid="text-academy-title">
+              {t("academy.title", "أكاديمية عالم الفهود")}
             </h1>
             <p className="text-2xl md:text-3xl text-accent font-black mb-6">
               تعلّم. تطور. قُد.

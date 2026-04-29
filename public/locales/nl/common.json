@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Nederlands"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "Over ons",
+    "whatWeDo": "Wat we doen",
+    "academy": "Academie",
+    "games": "Spellen",
+    "news": "Nieuws",
+    "events": "Evenementen",
+    "regions": "Regio's",
+    "resources": "Bronnen",
+    "store": "Winkel",
+    "signIn": "Inloggen",
+    "joinUs": "Doe mee",
+    "signOut": "Uitloggen",
+    "myAccount": "Mijn account",
+    "language": "Taal"
+  },
+  "academy": {
+    "title": "World Alfohod Academie",
+    "subtitle": "Leer. Leid. Inspireer."
+  }
+}

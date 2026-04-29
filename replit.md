@@ -103,3 +103,15 @@ Landing, About, WhatWeDo, ProgrammeDetail, News, ArticleDetail, Events, EventDet
   - Click to open panel with: mode toggle (عادي / لغة الإشارة) + animated sign dictionary (10 Arabic words)
   - In sign-language mode: button pulses blue with "صم" badge; bottom bar shows animated emoji signs cycling per word
   - AnimatedSign component cycles through emoji frames every 600ms to simulate motion
+
+## Internationalization (i18n) — 20 Languages
+
+- `src/lib/i18n.ts` — i18next config with browser language detection (localStorage `alfohod_lang` → navigator → htmlTag), HTTP backend loads JSON from `/locales/{{lng}}/common.json`, normalizes to language-only (`load: "languageOnly"` + `nonExplicitSupportedLngs: true`)
+- `applyLanguageDirection(code)` sets `<html dir>` and `<html lang>`; auto-fires on init + every languageChanged
+- RTL languages: `ar` (default), `fa`, `he`, `ur` — others LTR
+- All 20 supported: ar, en, fr, es, de, zh, ru, pt, it, tr, ja, ko, hi, id, ms, nl, fa, he, ur, sw
+- Translation files: `public/locales/{lang}/common.json` — Arabic + English have full nav + academy keys; other 18 have nav core + academy.title/subtitle, missing keys fall back to English (`fallbackLng: "en"`)
+- `src/components/layout/LanguageSwitcher.tsx` — dropdown with flag + native name + English label, normalizes `i18n.language` to handle `en-US`-style codes; variants: `compact` (desktop, shows label at lg+) / `icon` (mobile)
+- Wired into `Header.tsx`: replaced all hardcoded Arabic nav strings with `t("nav.*")`, mobile sheet side flips on dir, dropdown text-align flips, switcher in both desktop and mobile bars
+- Academy hero `h1` uses `t("academy.title", "أكاديمية عالم الفهود")` with Arabic fallback for safety
+- Loaded once via `import "./lib/i18n"` in `src/main.tsx`

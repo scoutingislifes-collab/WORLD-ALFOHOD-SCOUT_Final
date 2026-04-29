@@ -1,0 +1,47 @@
+{
+  "language": {
+    "name": "English"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "About Us",
+    "whatWeDo": "What We Do",
+    "academy": "Academy",
+    "games": "Games",
+    "news": "News",
+    "events": "Events",
+    "regions": "Regions",
+    "resources": "Resources",
+    "store": "Store",
+    "overview": "Overview",
+    "messengersOfPeace": "Messengers of Peace",
+    "earthTribe": "Earth Tribe",
+    "youthLeadership": "Youth Leadership",
+    "library": "Library",
+    "videos": "Videos",
+    "allProducts": "All Products",
+    "newIn": "New Arrivals",
+    "kids": "For Cubs & Youth",
+    "leaders": "Leadership Essentials",
+    "badges": "Membership & Achievement Badges",
+    "personalised": "Personalised Products",
+    "camping": "Adventure Gear",
+    "eventsCollection": "Jamboree & Events Collection",
+    "gifts": "Cheetahs Gifts",
+    "signIn": "Sign In",
+    "joinUs": "Join Us",
+    "signOut": "Sign Out",
+    "myAccount": "My Account",
+    "myMembership": "My Membership",
+    "myOrders": "My Orders",
+    "settings": "Settings",
+    "instructorPanel": "Instructor Panel",
+    "language": "Language",
+    "cart": "Cart",
+    "menu": "Menu"
+  },
+  "academy": {
+    "title": "World Alfohod Academy",
+    "subtitle": "Learn. Lead. Inspire."
+  }
+}
