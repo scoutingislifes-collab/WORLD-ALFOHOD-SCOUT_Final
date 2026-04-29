@@ -19,24 +19,46 @@ An inclusive scouting platform for the "Cheetahs Group" — a comprehensive mana
 
 ```
 src/
-  App.tsx           — Root component with routing
-  main.tsx          — Entry point
+  App.tsx           — Root component (wraps ThemeProvider + Auth + Cart + i18n)
+  main.tsx          — Entry point (registers /sw.js in production)
   pages/            — Page components
   components/       — Shared components (layout, ui, landing, auth, store, etc.)
-                      Store-specific UI: CinematicHeroSlider (3D promo slider),
-                      BentoGrid (departmental highlights), OffersTicker (scrolling
-                      news/discounts), Carousel3D (related items in circular 3D
-                      motion), LiveActivityFeed (psychological live notifications).
-  data/             — Static data files
+                      Store-specific UI: CinematicHeroSlider, BentoGrid,
+                      OffersTicker, Carousel3D, LiveActivityFeed.
+                      layout/: ThemeToggle, GlobalSearch (Cmd+K), SeoHead,
+                      PWAInstallPrompt, LanguageSwitcher.
+  context/          — ThemeContext (light/dark, persists to localStorage),
+                      AccessibilityContext.
+  data/             — Static data files (news, products, events, ACADEMY_COURSES)
   hooks/            — Custom React hooks
-  lib/              — Utilities (cn, etc.)
+  lib/              — Utilities (cn, i18n, globalSearch index, queryClient)
   assets/           — Static assets
 server/
-  src/              — Express backend (TypeScript, built separately)
-public/             — Static public files
-index.html          — HTML entry (Arabic/RTL)
+  src/              — Express backend (TypeScript) — auth, orders, academy,
+                      leaderboard, /api/contact (wired from ContactForm).
+public/
+  manifest.webmanifest — PWA manifest (SVG icons, RTL/Arabic)
+  sw.js                — Service worker (stale-while-revalidate, bypasses /api/ + /locales/)
+  favicon.svg, icons/  — Brand SVG icons (192, 512, maskable)
+index.html          — HTML entry (Arabic/RTL, PWA meta tags, theme-color, Cairo+Almarai)
 vite.config.ts      — Vite config (requires PORT and BASE_PATH env vars)
 ```
+
+## Recent Additions (April 2026)
+
+- **Dark mode**: `ThemeContext` toggles `.dark` on `<html>`, persists `alfohod_theme`
+  in localStorage, syncs the `theme-color` meta tag. `ThemeToggle` button appears
+  in both desktop and mobile header bars.
+- **Global search**: `GlobalSearch` (Cmd/Ctrl+K from anywhere) searches the
+  inline `globalSearch.ts` index covering academy courses, games, news, events,
+  and products. Inline input shown at 2xl+ in header; full search in mobile sheet.
+- **PWA**: `manifest.webmanifest`, `public/sw.js` (cache-first for static, network
+  bypass for `/api/` and `/locales/`), `PWAInstallPrompt` (8s defer, 7-day TTL).
+  Service worker is registered in `main.tsx` only in production builds.
+- **SEO**: `SeoHead` mounted in `App` updates `<title>`, description, OG/Twitter,
+  canonical, and `hreflang` for all 20 supported languages on every route change.
+- **Contact form**: `ContactForm` now POSTs to `/api/contact` via TanStack
+  `useMutation` + `apiRequest`, with loading state and error toasts.
 
 ## Running the App
 

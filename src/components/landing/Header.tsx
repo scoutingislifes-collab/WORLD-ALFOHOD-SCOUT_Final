@@ -7,6 +7,8 @@ import { Menu, PawPrint, ChevronDown, ShoppingCart, User as UserIcon, LogOut, Se
 import { useCart } from "../store/cartContext";
 import { useAuth } from "../auth/authContext";
 import { LanguageSwitcher } from "@/components/layout/LanguageSwitcher";
+import { ThemeToggle } from "@/components/layout/ThemeToggle";
+import { GlobalSearch } from "@/components/layout/GlobalSearch";
 import { isRTL } from "@/lib/i18n";
 import {
   DropdownMenu,
@@ -148,6 +150,10 @@ export function Header() {
 
         {/* Auth + Cart — far left in RTL */}
         <div className="hidden md:flex items-center gap-1.5 shrink-0">
+          <div className="hidden 2xl:block">
+            <GlobalSearch variant="header" />
+          </div>
+          <ThemeToggle />
           <LanguageSwitcher variant="compact" />
           <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary hover:text-secondary">
             <ShoppingCart className="h-5 w-5" />
@@ -223,7 +229,8 @@ export function Header() {
         </div>
 
         {/* Mobile Nav */}
-        <div className="md:hidden flex items-center gap-2">
+        <div className="md:hidden flex items-center gap-1">
+          <ThemeToggle />
           <LanguageSwitcher variant="icon" />
           <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary">
             <ShoppingCart className="h-6 w-6" />

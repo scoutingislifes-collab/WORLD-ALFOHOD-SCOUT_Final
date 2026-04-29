@@ -1,11 +1,14 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useMutation } from "@tanstack/react-query";
 import * as z from "zod";
 import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
 import { useToast } from "@/hooks/use-toast";
+import { apiRequest } from "@/lib/queryClient";
+import { Loader2, Send } from "lucide-react";
 
 const formSchema = z.object({
   name: z.string().min(2, { message: "الاسم يجب أن يكون أكثر من حرفين" }),
@@ -14,10 +17,12 @@ const formSchema = z.object({
   message: z.string().min(10, { message: "الرسالة يجب أن تكون أكثر من 10 أحرف" }),
 });
 
+type FormValues = z.infer<typeof formSchema>;
+
 export function ContactForm() {
   const { toast } = useToast();
-  
-  const form = useForm<z.infer<typeof formSchema>>({
+
+  const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: "",
@@ -27,12 +32,29 @@ export function ContactForm() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    toast({
-      title: "تم إرسال رسالتك بنجاح",
-      description: "سنتواصل معك في أقرب وقت ممكن.",
-    });
-    form.reset();
+  const submit = useMutation({
+    mutationFn: async (values: FormValues) => {
+      const res = await apiRequest("POST", "/api/contact", values);
+      return res.json();
+    },
+    onSuccess: () => {
+      toast({
+        title: "تم إرسال رسالتك بنجاح",
+        description: "سنتواصل معك في أقرب وقت ممكن.",
+      });
+      form.reset();
+    },
+    onError: (err: any) => {
+      toast({
+        title: "تعذّر إرسال الرسالة",
+        description: err?.message || "يرجى المحاولة مرة أخرى لاحقاً.",
+        variant: "destructive",
+      });
+    },
+  });
+
+  function onSubmit(values: FormValues) {
+    submit.mutate(values);
   }
 
   return (
@@ -90,7 +112,24 @@ export function ContactForm() {
             </FormItem>
           )}
         />
-        <Button type="submit" className="w-full h-14 text-lg font-bold rounded-full">إرسال الرسالة</Button>
+        <Button
+          type="submit"
+          disabled={submit.isPending}
+          className="w-full h-14 text-lg font-bold rounded-full bg-secondary text-white hover:bg-secondary/90 gap-2"
+          data-testid="button-contact-submit"
+        >
+          {submit.isPending ? (
+            <>
+              <Loader2 className="h-5 w-5 animate-spin" />
+              جارٍ الإرسال...
+            </>
+          ) : (
+            <>
+              <Send className="h-5 w-5" />
+              إرسال الرسالة
+            </>
+          )}
+        </Button>
       </form>
     </Form>
   );

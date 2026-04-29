@@ -4,3 +4,12 @@ import "./index.css";
 import "./lib/i18n";
 
 createRoot(document.getElementById("root")!).render(<App />);
+
+// Register the PWA service worker (production only — avoid HMR conflicts in dev)
+if ("serviceWorker" in navigator && import.meta.env.PROD) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker
+      .register("/sw.js", { scope: "/" })
+      .catch((err) => console.warn("SW registration failed:", err));
+  });
+}

@@ -5,7 +5,10 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/components/auth/authContext";
 import { CartProvider } from "@/components/store/cartContext";
 import { AccessibilityProvider } from "@/context/AccessibilityContext";
+import { ThemeProvider } from "@/context/ThemeContext";
 import { FloatingSignLanguageButton } from "@/components/accessibility/FloatingSignLanguageButton";
+import { PWAInstallPrompt } from "@/components/layout/PWAInstallPrompt";
+import { SeoHead } from "@/components/layout/SeoHead";
 
 import NotFound from "@/pages/not-found";
 import { LandingPage } from "@/components/landing/LandingPage";
@@ -90,19 +93,23 @@ function Router() {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <AccessibilityProvider>
-          <AuthProvider>
-            <CartProvider>
-              <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
-                <Router />
-                <FloatingSignLanguageButton />
-              </WouterRouter>
-            </CartProvider>
-          </AuthProvider>
-          <Toaster />
-        </AccessibilityProvider>
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <AccessibilityProvider>
+            <AuthProvider>
+              <CartProvider>
+                <SeoHead />
+                <WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, "")}>
+                  <Router />
+                  <FloatingSignLanguageButton />
+                  <PWAInstallPrompt />
+                </WouterRouter>
+              </CartProvider>
+            </AuthProvider>
+            <Toaster />
+          </AccessibilityProvider>
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
