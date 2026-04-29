@@ -111,8 +111,8 @@ export default function Register() {
       <div className="hidden md:block flex-1 relative order-1 md:order-2 h-64 md:h-auto">
         <div className="absolute inset-0 bg-primary/80 mix-blend-multiply z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent z-20" />
-        <img 
-          src="/src/assets/images/jamboree.png" 
+        <img loading="lazy" decoding="async" 
+          src="/src/assets/images/jamboree.webp" 
           alt="عالم الفهود" 
           className="absolute inset-0 w-full h-full object-cover"
         />

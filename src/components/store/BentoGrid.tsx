@@ -71,7 +71,7 @@ export function BentoGrid({ title, items }: Props) {
                   isGradient ? (
                     <div className="absolute inset-0" style={{ background: it.image }} />
                   ) : (
-                    <img
+                    <img loading="lazy" decoding="async"
                       src={it.image}
                       alt={it.title}
                       className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"

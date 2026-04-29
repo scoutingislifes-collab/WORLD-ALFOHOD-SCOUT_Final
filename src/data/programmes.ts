@@ -10,7 +10,7 @@ export const programmes = [
       projects: "٢.٥ مليون+",
       hours: "١.٥ مليار+"
     },
-    image: "/src/assets/images/service.png"
+    image: "/src/assets/images/service.webp"
   },
   {
     id: "prog-2",
@@ -23,7 +23,7 @@ export const programmes = [
       projects: "٨٠٠ ألف+",
       hours: "٤٥٠ مليون+"
     },
-    image: "/src/assets/images/donation-impact.png"
+    image: "/src/assets/images/donation-impact.webp"
   },
   {
     id: "prog-3",
@@ -36,6 +36,6 @@ export const programmes = [
       projects: "١٥٠ ألف+",
       hours: "٣٠٠ مليون+"
     },
-    image: "/src/assets/images/programme-hero.png"
+    image: "/src/assets/images/programme-hero.webp"
   }
 ];

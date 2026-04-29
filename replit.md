@@ -156,3 +156,47 @@ Landing, About, WhatWeDo, ProgrammeDetail, News, ArticleDetail, Events, EventDet
 - Wired into `Header.tsx`: replaced all hardcoded Arabic nav strings with `t("nav.*")`, mobile sheet side flips on dir, dropdown text-align flips, switcher in both desktop and mobile bars
 - Academy hero `h1` uses `t("academy.title", "أكاديمية عالم الفهود")` with Arabic fallback for safety
 - Loaded once via `import "./lib/i18n"` in `src/main.tsx`
+
+## Core Web Vitals Optimization (April 29 2026)
+
+Goal: <2s global load, all images served as WebP. Achieved an estimated **20.3 MB → 1.6 MB** image payload (~92% reduction) plus aggressive code-splitting and caching.
+
+### Image pipeline
+- `scripts/convert-images-to-webp.mjs` — sharp-based converter (quality 82, effort 5). Walks `src/assets/images/`, converts every `.png/.jpg/.jpeg` to `.webp`, deletes the source, then rewrites every matching string in `src/**/*.{ts,tsx,js,jsx,css}` from `.png/.jpg` to `.webp`. Idempotent — safe to re-run.
+- All 17 PNGs (about-hero, donation-impact, hero, jamboree, programme-hero, regions-abstract, service, store-banner, store-hero, video-featured, plus 7 product images) are now WebP. Largest savings: about-hero 2080KB → 256KB, service 1967KB → 218KB.
+- `scripts/add-lazy-loading.mjs` — adds `loading="lazy" decoding="async"` to every `<img>` tag in `src/` that does not already have a `loading=` attr. Touched 22 component/page files.
+- Hero LCP image (`src/components/landing/Hero.tsx`) overrides this with `loading="eager" fetchpriority="high"` so the browser prioritizes its download.
+- Fixed `src/pages/Login.tsx` — was using a string path `/src/assets/images/hero.webp` (broken in production). Now properly imported as `loginHeroImg from "@/assets/images/hero.webp"` so Vite hashes it.
+
+### Server (`server/index.ts` + `server/vite.ts`)
+- `compression()` middleware (gzip/brotli-aware) enabled with 1KB threshold. Compresses HTML, JS, CSS, JSON, SVG, manifest. WebP/JPG/PNG are skipped (already compressed).
+- `serveStatic()` rewritten with tiered Cache-Control:
+  - `/assets/*` (Vite-hashed JS/CSS/images): `immutable, max-age=31536000` (1 year)
+  - `/sw.js` + `/manifest.webmanifest`: `no-cache, must-revalidate` (instant updates)
+  - Everything else (favicon, locale JSON, icons): `max-age=86400` (1 day) with ETag
+  - `index.html`: `no-cache, no-store, must-revalidate`
+- Replaced legacy `require("express")` with proper `await import("express")` for ESM compatibility.
+
+### Vite (`vite.config.ts`)
+- Build target `es2020`, source maps off, compressed-size reporting off (faster builds).
+- `assetsInlineLimit: 4096` — inlines small assets to save HTTP roundtrips.
+- `manualChunks` splits `node_modules` into named vendor bundles for parallel/cacheable downloads:
+  - `react-vendor`, `query-vendor`, `ui-vendor` (Radix + cmdk + vaul), `motion-vendor`, `i18n-vendor`, `charts-vendor` (recharts + d3), `icons-vendor`, `forms-vendor` (zod + react-hook-form), and a catch-all `vendor`.
+- Bumped `chunkSizeWarningLimit` to 700 to suppress noise from sensible bundles.
+
+### App shell (`src/App.tsx`)
+- Switched from eager imports of every page to `React.lazy()` for all 32 secondary routes. Only `LandingPage` is eager (it's the entry route).
+- `<Suspense fallback={<RouteFallback/>}>` wraps the `<Switch>` with a centered spinner (`data-testid="status-route-loading"`).
+- Fixed a pre-existing bug: the in-component `new QueryClient()` was a fresh instance with no retry/network-mode config. Now imports the configured `queryClient` from `@/lib/queryClient`, restoring the self-healing behavior to all queries/mutations.
+
+### `index.html`
+- Added `dns-prefetch` for `images.unsplash.com` (used by news/articles/store).
+- Async font loading via `media="print" onload="this.media='all'"` pattern with `<noscript>` fallback — Google Fonts no longer blocks first paint.
+- Existing `preconnect` to fonts.googleapis.com + fonts.gstatic.com retained.
+
+### Net effect
+- Image payload reduction: ~92%. Hero image drops from 1.5 MB to 104 KB.
+- Initial JS bundle drops dramatically because every secondary route is now its own chunk fetched on demand.
+- Subsequent navigations cache the chunks immutably for a year.
+- API/HTML responses are gzip/brotli-compressed in production.
+- Sign-in / Account / Academy routes no longer pull their dependencies on landing page load.

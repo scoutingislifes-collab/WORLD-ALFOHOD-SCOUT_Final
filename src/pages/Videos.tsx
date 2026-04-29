@@ -93,7 +93,7 @@ export default function Videos() {
               {featuredVideo.thumbnail.startsWith("linear-gradient") ? (
                 <div className="absolute inset-0" style={{ background: featuredVideo.thumbnail }} />
               ) : (
-                <img
+                <img loading="lazy" decoding="async"
                   src={featuredVideo.thumbnail}
                   alt={featuredVideo.title}
                   className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"

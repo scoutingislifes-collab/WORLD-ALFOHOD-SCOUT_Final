@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Download } from "lucide-react";
-import aboutHeroImg from "@/assets/images/about-hero.png";
+import aboutHeroImg from "@/assets/images/about-hero.webp";
 
 const leaders = [
   { name: "سارة النعيمي", role: "الأمين العام", initials: "سن" },

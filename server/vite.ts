@@ -43,15 +43,40 @@ export async function setupVite(app: Express, server: Server) {
   });
 }
 
-export function serveStatic(app: Express) {
+export async function serveStatic(app: Express) {
   const distPath = path.resolve(__dirname, "..", "dist");
   if (!fs.existsSync(distPath)) {
     throw new Error(`Build directory not found: ${distPath}. Run npm run build first.`);
   }
-  const express = require("express");
-  app.use(express.static(distPath));
+  const express = (await import("express")).default;
+
+  // Hashed assets in /assets/* are immutable — cache for a year.
+  app.use(
+    "/assets",
+    express.static(path.join(distPath, "assets"), {
+      immutable: true,
+      maxAge: "365d",
+      etag: false,
+    }),
+  );
+
+  // Service worker + manifest must always be revalidated so updates ship fast.
+  app.get(["/sw.js", "/manifest.webmanifest"], (_req, res, next) => {
+    res.setHeader("Cache-Control", "no-cache, must-revalidate");
+    next();
+  });
+
+  // Other public files (icons, locale json, favicon) — modest caching.
+  app.use(
+    express.static(distPath, {
+      maxAge: "1d",
+      etag: true,
+    }),
+  );
+
   app.use("*", (req, res, next) => {
     if (req.originalUrl.startsWith("/api/")) return next();
+    res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
     res.sendFile(path.resolve(distPath, "index.html"));
   });
 }

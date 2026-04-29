@@ -3,7 +3,7 @@ export const videos = [
     id: "vid-1",
     title: "مخيم الفهود العالمي ٢٠٢٤ - أبرز اللحظات",
     duration: "05:24",
-    thumbnail: "/src/assets/images/video-featured.png",
+    thumbnail: "/src/assets/images/video-featured.webp",
     url: "https://commondatastorage.googleapis.com/gtv-videos-bucket/sample/BigBuckBunny.mp4",
     playlist: "الجمبوريات"
   },

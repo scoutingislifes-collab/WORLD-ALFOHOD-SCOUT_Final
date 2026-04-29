@@ -1,7 +1,7 @@
 import { SiteLayout } from "@/components/layout/SiteLayout";
 import { PageHero } from "@/components/layout/PageHero";
 import { DonationForm } from "@/components/forms/DonationForm";
-import donationImg from "@/assets/images/donation-impact.png";
+import donationImg from "@/assets/images/donation-impact.webp";
 import { motion } from "framer-motion";
 import { Heart, Globe, Users } from "lucide-react";
 

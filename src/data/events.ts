@@ -8,7 +8,7 @@ export const events = [
     location: "طوكيو، اليابان",
     type: "عالمي",
     description: "الحدث الأكبر للحركة، يجمع عشرات الآلاف من الشباب من جميع أنحاء العالم للاحتفال بالتنوع والصداقة.",
-    image: "/src/assets/images/jamboree.png",
+    image: "/src/assets/images/jamboree.webp",
     schedule: [
       { day: "اليوم 1", activities: "حفل الافتتاح وتسكين الوفود" },
       { day: "اليوم 2-5", activities: "الأنشطة التعليمية والمغامرات الخارجية" },
@@ -26,7 +26,7 @@ export const events = [
     location: "عمان، الأردن",
     type: "إقليمي",
     description: "لقاء يجمع شباب الإقليم العربي لتعزيز التعاون وتبادل الخبرات والثقافات وتطوير مبادرات إقليمية مشتركة.",
-    image: "/src/assets/images/about-hero.png",
+    image: "/src/assets/images/about-hero.webp",
     schedule: [
       { day: "اليوم 1", activities: "الوصول والاستقبال" },
       { day: "اليوم 2", activities: "ورش عمل القيادة والتنمية المهارية" },

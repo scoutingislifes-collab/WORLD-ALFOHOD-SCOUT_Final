@@ -61,7 +61,7 @@ function Card3D({ item, angle, base, cardWidth, radius, onClick }: CardProps) {
           {isGradient ? (
             <div className="absolute inset-0" style={{ background: item.image }} />
           ) : (
-            <img
+            <img loading="lazy" decoding="async"
               src={item.image}
               alt={item.title}
               className="absolute inset-0 w-full h-full object-cover"

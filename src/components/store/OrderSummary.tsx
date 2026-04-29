@@ -70,7 +70,7 @@ export function OrderSummary({
               {item.image.startsWith("linear-gradient") ? (
                 <div className="w-full h-full" style={{ background: item.image }} />
               ) : (
-                <img src={item.image} alt={item.name} className="w-full h-full object-cover" />
+                <img loading="lazy" decoding="async" src={item.image} alt={item.name} className="w-full h-full object-cover" />
               )}
             </div>
             <div className="flex-1 flex flex-col justify-center">

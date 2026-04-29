@@ -5,7 +5,7 @@ import { Link } from "wouter";
 import { motion } from "framer-motion";
 import { Card, CardContent } from "@/components/ui/card";
 import { ArrowLeft, Users } from "lucide-react";
-import regionsImg from "@/assets/images/regions-abstract.png";
+import regionsImg from "@/assets/images/regions-abstract.webp";
 
 export default function Regions() {
   return (

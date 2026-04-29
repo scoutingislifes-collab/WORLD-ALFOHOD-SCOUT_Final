@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import heroImg from "@/assets/images/hero.png";
+import heroImg from "@/assets/images/hero.webp";
 
 export function Hero() {
   return (
@@ -13,6 +13,10 @@ export function Hero() {
           src={heroImg}
           alt="شباب الفهود"
           className="w-full h-full object-cover object-center"
+          loading="eager"
+          decoding="async"
+          // @ts-expect-error fetchpriority is a valid HTML attr not yet typed in React
+          fetchpriority="high"
         />
       </div>
 

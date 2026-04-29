@@ -15,7 +15,7 @@ export function PageHero({ title, description, image, breadcrumbs }: PageHeroPro
       {image && (
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-primary/80 mix-blend-multiply z-10" />
-          <img
+          <img loading="lazy" decoding="async"
             src={image}
             alt={title}
             className="w-full h-full object-cover object-center opacity-60"

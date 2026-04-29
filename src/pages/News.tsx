@@ -198,7 +198,7 @@ export default function News() {
                   transition={{ duration: 0.7 }}
                   className="absolute inset-0"
                 >
-                  <img 
+                  <img loading="lazy" decoding="async" 
                     src={featuredNews[currentFeaturedIndex].image} 
                     alt={featuredNews[currentFeaturedIndex].title}
                     className="w-full h-full object-cover"

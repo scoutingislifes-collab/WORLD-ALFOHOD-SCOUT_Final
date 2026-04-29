@@ -15,7 +15,7 @@ export function ListArticleRow({ article }: ListArticleRowProps) {
         <Link href={`/news/${article.slug}`}>
           <div className="relative w-full md:w-[240px] h-[200px] md:h-full overflow-hidden cursor-pointer bg-muted/30 shrink-0">
             <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
-            <img 
+            <img loading="lazy" decoding="async" 
               src={article.image} 
               alt={article.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

@@ -69,7 +69,7 @@ export default function ArticleDetail() {
         <div className="absolute inset-0 z-0">
           <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/80 to-primary/40 mix-blend-multiply z-10" />
           <div className="absolute inset-0 bg-gradient-to-b from-background/40 to-transparent z-10" />
-          <img
+          <img loading="lazy" decoding="async"
             src={article.image}
             alt={article.title}
             className="w-full h-full object-cover object-center"
@@ -317,7 +317,7 @@ export default function ArticleDetail() {
                       <div className="group cursor-pointer">
                         <div className="relative h-40 rounded-xl overflow-hidden mb-3">
                           <div className="absolute inset-0 bg-primary/10 group-hover:bg-transparent transition-colors z-10" />
-                          <img 
+                          <img loading="lazy" decoding="async" 
                             src={relArticle.image} 
                             alt={relArticle.title}
                             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

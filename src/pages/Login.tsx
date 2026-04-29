@@ -6,6 +6,7 @@ import * as z from "zod";
 import { motion } from "framer-motion";
 import { PawPrint, Eye, EyeOff, Loader2 } from "lucide-react";
 import { FaGoogle, FaApple, FaFacebook } from "react-icons/fa";
+import loginHeroImg from "@/assets/images/hero.webp";
 
 import { useAuth } from "@/components/auth/authContext";
 import { useToast } from "@/hooks/use-toast";
@@ -201,10 +202,12 @@ export default function Login() {
       <div className="hidden md:block flex-1 relative order-1 md:order-2 h-64 md:h-auto">
         <div className="absolute inset-0 bg-primary/80 mix-blend-multiply z-10" />
         <div className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/40 to-transparent z-20" />
-        <img 
-          src="/src/assets/images/hero.png" 
-          alt="عالم الفهود" 
+        <img
+          src={loginHeroImg}
+          alt="عالم الفهود"
           className="absolute inset-0 w-full h-full object-cover"
+          loading="lazy"
+          decoding="async"
         />
         <div className="absolute inset-0 z-30 flex flex-col items-center justify-center p-12 text-center text-white">
           <h2 className="text-4xl md:text-5xl font-black leading-tight max-w-xl text-balance drop-shadow-lg">

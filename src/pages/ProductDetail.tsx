@@ -96,7 +96,7 @@ export default function ProductDetail() {
                     {img.startsWith("linear-gradient") ? (
                       <div className="w-full h-full" style={{ background: img }} />
                     ) : (
-                      <img src={img} alt="" className="w-full h-full object-contain bg-white p-2 mix-blend-multiply" />
+                      <img loading="lazy" decoding="async" src={img} alt="" className="w-full h-full object-contain bg-white p-2 mix-blend-multiply" />
                     )}
                   </div>
                 ))}

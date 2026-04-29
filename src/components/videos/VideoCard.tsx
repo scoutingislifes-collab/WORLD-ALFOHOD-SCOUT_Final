@@ -28,7 +28,7 @@ export function VideoCard({ video }: VideoCardProps) {
           {isGradient ? (
             <div className="w-full h-full" style={{ background: video.thumbnail }} />
           ) : (
-            <img 
+            <img loading="lazy" decoding="async" 
               src={video.thumbnail} 
               alt={video.title}
               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

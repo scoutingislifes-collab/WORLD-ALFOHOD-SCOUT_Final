@@ -343,7 +343,7 @@ export default function StoreCollection() {
                   className="group relative overflow-hidden rounded-2xl aspect-[4/3] cursor-pointer"
                 >
                   <div className="absolute inset-0 z-10 opacity-80 mix-blend-multiply transition-opacity group-hover:opacity-90" style={{ backgroundColor: c.accent }} />
-                  <img src={c.heroImage} alt={c.titleAr} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
+                  <img loading="lazy" decoding="async" src={c.heroImage} alt={c.titleAr} className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" />
                   <div className="absolute inset-0 z-20 p-6 flex flex-col justify-end bg-gradient-to-t from-black/80 via-black/20 to-transparent">
                     <span className="text-white/80 text-sm font-bold mb-1">{c.subtitleAr}</span>
                     <h3 className="text-2xl font-black text-white mb-2">{c.titleAr}</h3>

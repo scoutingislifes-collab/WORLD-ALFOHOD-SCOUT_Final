@@ -71,7 +71,7 @@ function VideoPreview() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
           <div className="lg:col-span-2 relative aspect-video rounded-3xl overflow-hidden group cursor-pointer border border-white/20">
             <Link href="/videos">
-              <img src={featured.thumbnail} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
+              <img loading="lazy" decoding="async" src={featured.thumbnail} alt={featured.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700" />
               <div className="absolute inset-0 bg-black/40 group-hover:bg-black/50 transition-colors flex items-center justify-center">
                 <PlayCircle className="h-20 w-20 text-white/90 group-hover:scale-110 transition-transform" />
               </div>
@@ -117,7 +117,7 @@ function EventsPreview() {
             <Link key={event.id} href={`/events/${event.slug}`}>
               <div className="flex bg-white rounded-2xl shadow-sm hover:shadow-xl transition-shadow border border-border/50 overflow-hidden cursor-pointer group h-full">
                 <div className="w-1/3 bg-muted/30 relative">
-                  <img src={event.image} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
+                  <img loading="lazy" decoding="async" src={event.image} alt={event.title} className="w-full h-full object-cover group-hover:scale-105 transition-transform" />
                 </div>
                 <div className="w-2/3 p-6 flex flex-col justify-center">
                   <div className="flex items-center gap-2 text-sm font-bold text-muted-foreground mb-3">

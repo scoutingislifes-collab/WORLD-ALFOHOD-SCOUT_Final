@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft, ArrowUpRight } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
-import serviceImg from "@/assets/images/service.png";
+import serviceImg from "@/assets/images/service.webp";
 
 const stories = [
   {
@@ -67,7 +67,7 @@ export function FeaturedStories() {
               <Card className="h-full overflow-hidden border-border/50 group cursor-pointer bg-white hover:shadow-xl transition-all duration-300">
                 <div className="relative h-64 overflow-hidden">
                   <div className="absolute inset-0 bg-primary/20 group-hover:bg-transparent transition-colors z-10" />
-                  <img 
+                  <img loading="lazy" decoding="async" 
                     src={story.image} 
                     alt={story.title}
                     className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

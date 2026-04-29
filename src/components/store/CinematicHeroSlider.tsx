@@ -159,7 +159,7 @@ export function CinematicHeroSlider({ slides, intervalMs = 6000 }: Props) {
                 {isGradient ? (
                   <div className="absolute inset-0" style={{ background: current.image }} />
                 ) : (
-                  <img
+                  <img loading="lazy" decoding="async"
                     src={current.image}
                     alt={current.title}
                     className="absolute inset-0 w-full h-full object-cover"

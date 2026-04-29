@@ -21,7 +21,7 @@ export function EventCard({ event }: EventCardProps) {
     <Card className="overflow-hidden border-border/50 group bg-white hover:shadow-xl transition-all duration-300">
       <div className="flex flex-col md:flex-row">
         <div className="md:w-1/3 relative h-48 md:h-auto overflow-hidden bg-muted/30">
-          <img 
+          <img loading="lazy" decoding="async" 
             src={event.image} 
             alt={event.title}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"

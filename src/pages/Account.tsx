@@ -595,7 +595,7 @@ export default function Account() {
                                   <div className="flex -space-x-4 rtl:space-x-reverse shrink-0">
                                     {order.items.slice(0, 4).map((item: any, i: number) => (
                                       <div key={i} className="w-16 h-16 rounded-xl border-2 border-background overflow-hidden bg-white shrink-0 relative z-10 shadow-sm">
-                                        <img src={item.image} alt={item.name} className="w-full h-full object-contain p-2" />
+                                        <img loading="lazy" decoding="async" src={item.image} alt={item.name} className="w-full h-full object-contain p-2" />
                                       </div>
                                     ))}
                                     {order.items.length > 4 && (
@@ -716,7 +716,7 @@ export default function Account() {
                                       {order.items.map((item: any, i: number) => (
                                         <div key={i} className="flex gap-4 items-center">
                                           <div className="w-16 h-16 rounded-xl border border-border bg-white p-2 shrink-0">
-                                            <img src={item.image} alt={item.name} className="w-full h-full object-contain" />
+                                            <img loading="lazy" decoding="async" src={item.image} alt={item.name} className="w-full h-full object-contain" />
                                           </div>
                                           <div className="flex-1">
                                             <p className="font-bold text-sm line-clamp-1">{item.name}</p>

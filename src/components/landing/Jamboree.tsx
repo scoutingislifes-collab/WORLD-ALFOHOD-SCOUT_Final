@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
 import { Calendar, MapPin, ArrowLeft } from "lucide-react";
-import jamboreeImg from "@/assets/images/jamboree.png";
+import jamboreeImg from "@/assets/images/jamboree.webp";
 
 export function Jamboree() {
   return (
     <section id="jamboree" className="py-24 relative overflow-hidden bg-primary text-white">
       <div className="absolute inset-0 z-0">
-        <img
+        <img loading="lazy" decoding="async"
           src={jamboreeImg}
           alt="المخيم العالمي"
           className="w-full h-full object-cover object-center opacity-30 mix-blend-overlay"
