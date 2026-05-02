@@ -103,7 +103,7 @@ function AddLessonDialog({ course, onSave }: { course: InstructorCourse; onSave:
   const { toast } = useToast();
   const [open, setOpen] = useState(false);
   const form = useForm<LessonFormData>({
-    resolver: zodResolver(lessonSchema),
+    resolver: zodResolver(lessonSchema) as any,
     defaultValues: { title: "", duration: "", type: "video", description: "" },
   });
 
@@ -281,7 +281,7 @@ function NewCourseForm({ instructorId, instructorName, onCreated }: {
   const [selectedColor, setSelectedColor] = useState(COVER_COLORS[0]);
 
   const form = useForm<CourseFormData>({
-    resolver: zodResolver(courseSchema),
+    resolver: zodResolver(courseSchema) as any,
     defaultValues: {
       title: "", subtitle: "", description: "", longDescription: "",
       category: "", level: "", price: 0, isFree: true, certificate: true,

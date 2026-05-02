@@ -105,7 +105,7 @@ export function Header() {
         </Link>
 
         {/* Desktop Nav — fills remaining space */}
-        <nav className="hidden md:flex flex-1 items-center justify-start gap-0.5 lg:gap-1 min-w-0">
+        <nav className="hidden xl:flex flex-1 items-center justify-start gap-0.5 lg:gap-1 min-w-0">
           {mainLinks.map((link, idx) => (
             link.children ? (
               <DropdownMenu key={`${link.key}-${idx}`} dir={dir as any}>
@@ -149,28 +149,35 @@ export function Header() {
         </nav>
 
         {/* Auth + Cart — far left in RTL */}
-        <div className="hidden md:flex items-center gap-1.5 shrink-0">
+        <div className="hidden xl:flex items-center gap-2 lg:gap-3 shrink-0">
           <div className="hidden 2xl:block">
             <GlobalSearch variant="header" />
           </div>
-          <ThemeToggle />
-          <LanguageSwitcher variant="compact" />
-          <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary hover:text-secondary">
-            <ShoppingCart className="h-5 w-5" />
-            {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-destructive text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full">
-                {totalItems}
-              </span>
-            )}
-          </Button>
+          
+          <div className="flex items-center gap-1.5 bg-muted/30 px-2 py-1 rounded-full border border-border/50">
+            <ThemeToggle />
+            <div className="h-4 w-px bg-border/80" />
+            <LanguageSwitcher variant="compact" />
+            <div className="h-4 w-px bg-border/80" />
+            <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary hover:text-secondary h-9 w-9 rounded-full">
+              <ShoppingCart className="h-4 w-4" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </Button>
+          </div>
+
+          <div className="h-6 w-px bg-border mx-1" />
 
           {authState.user ? (
             <DropdownMenu dir={dir as any}>
               <DropdownMenuTrigger asChild>
-                <Button variant="ghost" className="pl-0 pr-2 gap-3 h-12 rounded-full hover:bg-muted">
+                <Button variant="ghost" className="pl-0 pr-2 gap-3 h-11 rounded-full hover:bg-muted border border-transparent hover:border-border transition-colors">
                   <span className="font-bold hidden lg:block">{authState.user.name.split(' ')[0]}</span>
                   <div 
-                    className="h-8 w-8 rounded-full flex items-center justify-center text-white font-bold text-xs"
+                    className="h-8 w-8 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-sm"
                     style={{ backgroundColor: authState.user.avatarColor }}
                   >
                     {getInitials(authState.user.name)}
@@ -215,13 +222,13 @@ export function Header() {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-3">
               <Link href="/login">
-                <Button variant="ghost" className="font-bold text-sm h-10 rounded-full">
+                <Button variant="ghost" className="font-bold text-sm h-10 px-4 rounded-full hover:bg-muted">
                   {t("nav.signIn")}
                 </Button>
               </Link>
-              <Link href="/register" className="font-bold text-sm bg-secondary text-white hover:bg-secondary/90 px-5 py-2 rounded-full inline-flex items-center justify-center h-10 whitespace-nowrap">
+              <Link href="/register" className="font-bold text-sm bg-secondary text-white hover:bg-secondary/90 px-6 py-2.5 rounded-full inline-flex items-center justify-center h-10 whitespace-nowrap shadow-sm hover:shadow-md transition-all">
                 {t("nav.joinUs")}
               </Link>
             </div>
@@ -229,17 +236,19 @@ export function Header() {
         </div>
 
         {/* Mobile Nav */}
-        <div className="md:hidden flex items-center gap-1">
-          <ThemeToggle />
-          <LanguageSwitcher variant="icon" />
-          <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary">
-            <ShoppingCart className="h-6 w-6" />
-            {totalItems > 0 && (
-              <span className="absolute -top-1 -right-1 bg-destructive text-white text-[10px] font-bold h-5 w-5 flex items-center justify-center rounded-full">
-                {totalItems}
-              </span>
-            )}
-          </Button>
+        <div className="xl:hidden flex items-center gap-3">
+          <div className="flex items-center gap-1 bg-muted/30 px-1.5 py-1 rounded-full border border-border/50">
+            <ThemeToggle />
+            <LanguageSwitcher variant="icon" />
+            <Button variant="ghost" size="icon" onClick={() => cartDispatch({ type: "TOGGLE_CART" })} className="relative text-primary hover:text-secondary h-9 w-9 rounded-full">
+              <ShoppingCart className="h-5 w-5" />
+              {totalItems > 0 && (
+                <span className="absolute -top-1 -right-1 bg-destructive text-destructive-foreground text-[10px] font-bold h-4 w-4 flex items-center justify-center rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </Button>
+          </div>
           <Sheet open={isOpen} onOpenChange={setIsOpen}>
             <SheetTrigger asChild>
               <Button variant="ghost" size="icon" className="text-primary">

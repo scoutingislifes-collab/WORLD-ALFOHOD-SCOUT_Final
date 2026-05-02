@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "한국어"
+  },
+  "nav": {
+    "home": "홈",
+    "about": "소개",
+    "whatWeDo": "우리의 활동",
+    "academy": "아카데미",
+    "games": "게임",
+    "news": "뉴스",
+    "events": "이벤트",
+    "regions": "지역",
+    "resources": "자료",
+    "store": "스토어",
+    "signIn": "로그인",
+    "joinUs": "가입하기",
+    "signOut": "로그아웃",
+    "myAccount": "내 계정",
+    "language": "언어"
+  },
+  "academy": {
+    "title": "월드 알포후드 아카데미",
+    "subtitle": "배우고. 이끌고. 영감을 주다."
+  }
+}

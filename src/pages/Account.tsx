@@ -84,7 +84,7 @@ export default function Account() {
   });
 
   const form = useForm<z.infer<typeof profileSchema>>({
-    resolver: zodResolver(profileSchema),
+    resolver: zodResolver(profileSchema) as any,
     defaultValues: {
       name: state.user?.name || "",
       email: state.user?.email || "",

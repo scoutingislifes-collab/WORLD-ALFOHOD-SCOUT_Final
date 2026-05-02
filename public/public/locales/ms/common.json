@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Melayu"
+  },
+  "nav": {
+    "home": "Laman Utama",
+    "about": "Mengenai Kami",
+    "whatWeDo": "Apa Yang Kami Buat",
+    "academy": "Akademi",
+    "games": "Permainan",
+    "news": "Berita",
+    "events": "Acara",
+    "regions": "Wilayah",
+    "resources": "Sumber",
+    "store": "Kedai",
+    "signIn": "Log Masuk",
+    "joinUs": "Sertai Kami",
+    "signOut": "Log Keluar",
+    "myAccount": "Akaun Saya",
+    "language": "Bahasa"
+  },
+  "academy": {
+    "title": "Akademi World Alfohod",
+    "subtitle": "Belajar. Memimpin. Memberi Inspirasi."
+  }
+}

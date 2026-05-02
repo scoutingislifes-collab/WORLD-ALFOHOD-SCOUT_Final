@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Français"
+  },
+  "nav": {
+    "home": "Accueil",
+    "about": "À propos",
+    "whatWeDo": "Nos actions",
+    "academy": "Académie",
+    "games": "Jeux",
+    "news": "Actualités",
+    "events": "Événements",
+    "regions": "Régions",
+    "resources": "Ressources",
+    "store": "Boutique",
+    "signIn": "Connexion",
+    "joinUs": "Rejoignez-nous",
+    "signOut": "Déconnexion",
+    "myAccount": "Mon compte",
+    "language": "Langue"
+  },
+  "academy": {
+    "title": "Académie World Alfohod",
+    "subtitle": "Apprendre. Guider. Inspirer."
+  }
+}

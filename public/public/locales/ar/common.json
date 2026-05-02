@@ -1,0 +1,47 @@
+{
+  "language": {
+    "name": "العربية"
+  },
+  "nav": {
+    "home": "الرئيسية",
+    "about": "من نحن",
+    "whatWeDo": "ما نقوم به",
+    "academy": "الأكاديمية",
+    "games": "الألعاب",
+    "news": "الأخبار",
+    "events": "الفعاليات",
+    "regions": "المناطق",
+    "resources": "الموارد",
+    "store": "المتجر",
+    "overview": "نظرة عامة",
+    "messengersOfPeace": "رسل السلام",
+    "earthTribe": "قبيلة الأرض",
+    "youthLeadership": "القيادة الشبابية",
+    "library": "المكتبة",
+    "videos": "الفيديوهات",
+    "allProducts": "كل المنتجات",
+    "newIn": "أحدث المنتجات",
+    "kids": "للناشئة والأشبال",
+    "leaders": "كل ما تحتاجه القيادة",
+    "badges": "شارات العضوية والإنجاز",
+    "personalised": "منتجات مخصصة",
+    "camping": "معدات المغامرة",
+    "eventsCollection": "مجموعة الجمبوري والفعاليات",
+    "gifts": "هدايا عالم الفهود",
+    "signIn": "تسجيل الدخول",
+    "joinUs": "انضم إلينا",
+    "signOut": "تسجيل الخروج",
+    "myAccount": "حسابي",
+    "myMembership": "عضويتي",
+    "myOrders": "طلباتي",
+    "settings": "الإعدادات",
+    "instructorPanel": "لوحة المدرّب",
+    "language": "اللغة",
+    "cart": "السلة",
+    "menu": "القائمة"
+  },
+  "academy": {
+    "title": "أكاديمية عالم الفهود",
+    "subtitle": "تعلّم. قُد. ألهم."
+  }
+}

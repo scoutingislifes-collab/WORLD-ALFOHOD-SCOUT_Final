@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Русский"
+  },
+  "nav": {
+    "home": "Главная",
+    "about": "О нас",
+    "whatWeDo": "Чем мы занимаемся",
+    "academy": "Академия",
+    "games": "Игры",
+    "news": "Новости",
+    "events": "События",
+    "regions": "Регионы",
+    "resources": "Ресурсы",
+    "store": "Магазин",
+    "signIn": "Войти",
+    "joinUs": "Присоединиться",
+    "signOut": "Выйти",
+    "myAccount": "Мой аккаунт",
+    "language": "Язык"
+  },
+  "academy": {
+    "title": "Академия World Alfohod",
+    "subtitle": "Учись. Веди. Вдохновляй."
+  }
+}

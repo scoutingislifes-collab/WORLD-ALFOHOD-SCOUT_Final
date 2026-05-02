@@ -1,6 +1,6 @@
 import { useState, useMemo } from "react";
 import { SiteLayout } from "@/components/layout/SiteLayout";
-import { useRoute, Link } from "wouter";
+import { useParams, Link } from "wouter";
 import { collections } from "@/data/collections";
 import { products } from "@/data/products";
 import NotFound from "./not-found";
@@ -21,8 +21,7 @@ import { motion } from "framer-motion";
 const ITEMS_PER_PAGE = 9;
 
 export default function StoreCollection() {
-  const [, params] = useRoute("/store/c/:slug");
-  const slug = params?.slug;
+  const { slug } = useParams<{ slug: string }>();
 
   const collection = collections.find((c) => c.slug === slug);
   

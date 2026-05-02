@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useRoute, Link, useLocation } from "wouter";
+import { useParams, Link, useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { 
   ChevronRight, ChevronLeft, Play, FileText, HelpCircle, 
@@ -13,8 +13,7 @@ import { useToast } from "@/hooks/use-toast";
 import { academyApi } from "@/lib/academyApi";
 
 export default function AcademyLearn() {
-  const [, params] = useRoute("/academy/learn/:slug");
-  const slug = params?.slug || "";
+  const { slug = "" } = useParams<{ slug: string }>();
   const [location, setLocation] = useLocation();
   const searchParams = new URLSearchParams(window.location.search);
   const currentLessonSlug = searchParams.get("lesson");

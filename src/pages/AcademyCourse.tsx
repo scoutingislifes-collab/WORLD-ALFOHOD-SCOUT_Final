@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useRoute, Link, useLocation } from "wouter";
+import { useParams, Link, useLocation } from "wouter";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { motion } from "framer-motion";
 import { 
@@ -16,8 +16,7 @@ import { academyApi } from "@/lib/academyApi";
 import NotFound from "@/pages/not-found";
 
 export default function AcademyCourse() {
-  const [, params] = useRoute("/academy/c/:slug");
-  const slug = params?.slug || "";
+  const { slug = "" } = useParams<{ slug: string }>();
   const [location, setLocation] = useLocation();
   const { state: authState } = useAuth();
   const { toast } = useToast();

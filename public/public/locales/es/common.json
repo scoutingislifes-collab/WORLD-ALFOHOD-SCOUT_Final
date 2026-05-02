@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Español"
+  },
+  "nav": {
+    "home": "Inicio",
+    "about": "Quiénes somos",
+    "whatWeDo": "Qué hacemos",
+    "academy": "Academia",
+    "games": "Juegos",
+    "news": "Noticias",
+    "events": "Eventos",
+    "regions": "Regiones",
+    "resources": "Recursos",
+    "store": "Tienda",
+    "signIn": "Iniciar sesión",
+    "joinUs": "Únete",
+    "signOut": "Cerrar sesión",
+    "myAccount": "Mi cuenta",
+    "language": "Idioma"
+  },
+  "academy": {
+    "title": "Academia World Alfohod",
+    "subtitle": "Aprende. Lidera. Inspira."
+  }
+}

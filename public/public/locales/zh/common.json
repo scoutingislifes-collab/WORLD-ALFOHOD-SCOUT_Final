@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "中文"
+  },
+  "nav": {
+    "home": "首页",
+    "about": "关于我们",
+    "whatWeDo": "我们的工作",
+    "academy": "学院",
+    "games": "游戏",
+    "news": "新闻",
+    "events": "活动",
+    "regions": "地区",
+    "resources": "资源",
+    "store": "商店",
+    "signIn": "登录",
+    "joinUs": "加入我们",
+    "signOut": "退出",
+    "myAccount": "我的账户",
+    "language": "语言"
+  },
+  "academy": {
+    "title": "世界豹学院",
+    "subtitle": "学习。引领。激励。"
+  }
+}

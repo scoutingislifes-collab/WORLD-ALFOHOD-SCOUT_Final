@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Kiswahili"
+  },
+  "nav": {
+    "home": "Mwanzo",
+    "about": "Kuhusu Sisi",
+    "whatWeDo": "Tunafanya Nini",
+    "academy": "Akademia",
+    "games": "Michezo",
+    "news": "Habari",
+    "events": "Matukio",
+    "regions": "Mikoa",
+    "resources": "Rasilimali",
+    "store": "Duka",
+    "signIn": "Ingia",
+    "joinUs": "Jiunge Nasi",
+    "signOut": "Toka",
+    "myAccount": "Akaunti Yangu",
+    "language": "Lugha"
+  },
+  "academy": {
+    "title": "Akademia ya World Alfohod",
+    "subtitle": "Jifunze. Ongoza. Hamasisha."
+  }
+}

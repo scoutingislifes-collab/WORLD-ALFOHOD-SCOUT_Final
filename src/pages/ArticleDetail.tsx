@@ -25,7 +25,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
 
 export default function ArticleDetail() {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const { toast } = useToast();
   const article = news.find(n => n.slug === slug);
   const [comment, setComment] = useState("");

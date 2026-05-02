@@ -16,7 +16,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
 
 export default function ProductDetail() {
-  const { slug } = useParams();
+  const { slug } = useParams<{ slug: string }>();
   const { dispatch } = useCart();
   const product = products.find(p => p.slug === slug);
   

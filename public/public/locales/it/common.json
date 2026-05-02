@@ -1,0 +1,26 @@
+{
+  "language": {
+    "name": "Italiano"
+  },
+  "nav": {
+    "home": "Home",
+    "about": "Chi siamo",
+    "whatWeDo": "Cosa facciamo",
+    "academy": "Accademia",
+    "games": "Giochi",
+    "news": "Notizie",
+    "events": "Eventi",
+    "regions": "Regioni",
+    "resources": "Risorse",
+    "store": "Negozio",
+    "signIn": "Accedi",
+    "joinUs": "Unisciti",
+    "signOut": "Esci",
+    "myAccount": "Il mio account",
+    "language": "Lingua"
+  },
+  "academy": {
+    "title": "Accademia World Alfohod",
+    "subtitle": "Impara. Guida. Ispira."
+  }
+}
